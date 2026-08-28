@@ -90,12 +90,61 @@ class StudentController extends Controller
         return redirect()->route('admin.students.show', $student)->with('success', 'Kode akses berhasil di-generate.')->with('access_code', $plainCode);
     }
 
+    public function migration(Request $request)
+    {
+        $classes = SchoolClass::orderBy('name')->get();
+        $academicYears = AcademicYear::orderByDesc('year_label')->get();
+
+        $sourceClass = $request->filled('class_id') ? $classes->firstWhere('id', (int) $request->class_id) : null;
+
+        $targetClasses = $classes
+            ->reject(fn (SchoolClass $c) => $sourceClass && $c->id === $sourceClass->id)
+            ->filter(function (SchoolClass $c) use ($sourceClass) {
+                if (! $sourceClass) {
+                    return true;
+                }
+
+                $sourceGrade = $sourceClass->gradeLevel();
+                $targetGrade = $c->gradeLevel();
+
+                return $sourceGrade === null || $targetGrade === null || $targetGrade >= $sourceGrade;
+            })
+            ->values();
+
+        $students = Student::query()
+            ->with('currentClass:id,name')
+            ->when($sourceClass, fn ($q) => $q->where('class_id', $sourceClass->id))
+            ->when($request->search, fn ($q, $s) => $q->where(fn ($q2) => $q2->where('name', 'like', "%{$s}%")->orWhere('nisn', 'like', "%{$s}%")))
+            ->orderBy('name')
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('admin.students.migration', compact('students', 'classes', 'academicYears', 'sourceClass', 'targetClasses'));
+    }
+
     public function bulkMigrate(BulkMigrateStudentsRequest $request)
     {
         $targetClass = SchoolClass::findOrFail($request->target_class_id);
         $academicYear = AcademicYear::findOrFail($request->academic_year_id);
+        $targetGrade = $targetClass->gradeLevel();
+
+        if ($targetGrade !== null) {
+            $students = Student::with('currentClass:id,name')->whereIn('id', $request->student_ids)->get();
+            $downgraded = $students->first(function (Student $student) use ($targetGrade) {
+                $currentGrade = $student->currentClass?->gradeLevel();
+
+                return $currentGrade !== null && $targetGrade < $currentGrade;
+            });
+
+            if ($downgraded) {
+                return back()->withErrors([
+                    'target_class_id' => "Tidak bisa memindahkan siswa dari kelas {$downgraded->currentClass->name} turun ke kelas {$targetClass->name}.",
+                ])->withInput();
+            }
+        }
+
         $count = $this->migrationService->migrateStudents($request->student_ids, $targetClass, $academicYear);
 
-        return redirect()->route('admin.students.index')->with('success', "{$count} siswa berhasil dipindahkan ke kelas {$targetClass->name}.");
+        return redirect()->route('admin.students.migration')->with('success', "{$count} siswa berhasil dipindahkan ke kelas {$targetClass->name}.");
     }
 }

@@ -63,9 +63,10 @@ Route::prefix('admin')
         Route::get('students/import/template', [Admin\StudentImportController::class, 'template'])->name('students.import.template');
         Route::post('students/import/parse', [Admin\StudentImportController::class, 'parse'])->name('students.import.parse');
         Route::post('students/import/process', [Admin\StudentImportController::class, 'process'])->name('students.import.process');
+        Route::get('students/migration', [Admin\StudentController::class, 'migration'])->name('students.migration');
+        Route::post('students/bulk-migrate', [Admin\StudentController::class, 'bulkMigrate'])->name('students.bulk-migrate');
         Route::resource('students', Admin\StudentController::class);
         Route::post('students/{student}/generate-access-code', [Admin\StudentController::class, 'generateAccessCode'])->name('students.generate-access-code');
-        Route::post('students/bulk-migrate', [Admin\StudentController::class, 'bulkMigrate'])->name('students.bulk-migrate');
 
         Route::resource('rules', Admin\RuleController::class);
         Route::post('rules/{rule}/toggle-active', [Admin\RuleController::class, 'toggleActive'])->name('rules.toggle-active');

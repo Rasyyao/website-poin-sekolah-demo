@@ -48,4 +48,17 @@ class SchoolClass extends Model
     {
         return $this->students()->count();
     }
+
+    /**
+     * Parse the leading grade number from the class name (e.g. "7A" -> 7).
+     * Returns null when the name has no leading number.
+     */
+    public function gradeLevel(): ?int
+    {
+        if (preg_match('/^(\d+)/', $this->name, $matches)) {
+            return (int) $matches[1];
+        }
+
+        return null;
+    }
 }
