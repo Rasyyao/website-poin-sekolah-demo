@@ -22,8 +22,18 @@ class ReportController extends Controller
     {
         $schoolId = $request->user()->school_id;
 
-        $stats = $this->reportService->dashboardStats($schoolId, $request->from, $request->to);
-        $topViolators = $this->reportService->topViolators($schoolId, 5, $request->from, $request->to);
+        $filter = $request->input('filter', 'last_30_days');
+        $to = now()->format('Y-m-d');
+        if ($filter === 'today') {
+            $from = now()->format('Y-m-d');
+        } elseif ($filter === 'last_7_days') {
+            $from = now()->subDays(7)->format('Y-m-d');
+        } else {
+            $from = now()->subDays(30)->format('Y-m-d');
+        }
+
+        $stats = $this->reportService->dashboardStats($schoolId, $from, $to);
+        $topViolators = $this->reportService->topViolators($schoolId, 5, $from, $to);
         $pendingCount = PointsLog::where('status', 'pending')->count();
         $recentLogs = PointsLog::with(['student:id,name', 'rule:id,name,type'])
             ->where('status', 'approved')
@@ -34,7 +44,33 @@ class ReportController extends Controller
         $chartData = $this->reportService->dashboardChartData($schoolId);
         $classDistributionData = $this->reportService->dashboardClassDistribution($schoolId);
 
-        return view('admin.dashboard', compact('stats', 'topViolators', 'pendingCount', 'recentLogs', 'chartData', 'classDistributionData'));
+        return view('admin.dashboard', compact('stats', 'topViolators', 'pendingCount', 'recentLogs', 'chartData', 'classDistributionData', 'from', 'to', 'filter'));
+    }
+
+    public function exportDashboard(Request $request)
+    {
+        $schoolId = $request->user()->school_id;
+        
+        $filter = $request->input('filter', 'last_30_days');
+        $to = now()->format('Y-m-d');
+        if ($filter === 'today') {
+            $from = now()->format('Y-m-d');
+        } elseif ($filter === 'last_7_days') {
+            $from = now()->subDays(7)->format('Y-m-d');
+        } else {
+            $from = now()->subDays(30)->format('Y-m-d');
+        }
+
+        $logs = PointsLog::with(['student:id,name', 'rule:id,name,type'])
+            ->whereHas('student', function ($q) use ($schoolId) {
+                $q->where('school_id', $schoolId);
+            })
+            ->where('status', 'approved')
+            ->whereBetween('occurred_at', [$from . ' 00:00:00', $to . ' 23:59:59'])
+            ->orderByDesc('occurred_at')
+            ->get();
+
+        return Excel::download(new \App\Exports\DashboardExport($logs, $from, $to), 'dashboard_report_' . $from . '_to_' . $to . '.xlsx');
     }
 
     public function ranking(Request $request)

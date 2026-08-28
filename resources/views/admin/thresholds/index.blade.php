@@ -5,21 +5,20 @@
 @section('page-desc', 'Atur aksi otomatis berdasarkan akumulasi poin pelanggaran siswa.')
 
 @section('page-actions')
-    <button x-data @click="$dispatch('open-modal')" class="px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-colors cursor-pointer">+ Tambah</button>
 @endsection
 @section('content')
 <div x-data="{ showModal: {{ (old('_method') !== 'PUT' && $errors->any()) ? 'true' : 'false' }} }" @open-modal.window="showModal = true">
 
 <div class="space-y-3">
     @forelse($thresholds as $t)
-        <div class="bg-surface-light rounded-xl border border-gray-700/50 p-5 flex items-center justify-between" x-data="{ showEditModal: {{ (old('_method') == 'PUT' && old('threshold_id') == $t->id && $errors->any()) ? 'true' : 'false' }} }">
+        <div class="bg-white rounded-xl border border-slate-200 p-5 flex items-center justify-between" x-data="{ showEditModal: {{ (old('_method') == 'PUT' && old('threshold_id') == $t->id && $errors->any()) ? 'true' : 'false' }} }">
             <div class="flex items-center gap-4">
                 <div class="w-12 h-12 rounded-lg bg-red-500/10 flex items-center justify-center">
                     <span class="text-lg font-bold text-red-400">{{ $t->min_points }}</span>
                 </div>
                 <div>
-                    <p class="text-sm font-medium text-gray-200">≥ {{ $t->min_points }} poin → {{ $t->action }}</p>
-                    <p class="text-xs text-gray-500">{{ $t->description ?? '-' }}</p>
+                    <p class="text-sm font-medium text-slate-900">≥ {{ $t->min_points }} poin → {{ $t->action }}</p>
+                    <p class="text-xs text-slate-400">{{ $t->description ?? '-' }}</p>
                 </div>
             </div>
             <div class="flex gap-2">
@@ -47,10 +46,10 @@
 
                     <div x-show="showEditModal"
                          class="fixed inset-0 flex items-center justify-center p-4 z-[50]">
-                        <div class="bg-surface rounded-xl shadow-2xl border border-gray-700/50 w-full max-w-lg max-h-[90vh] overflow-y-auto p-6" @click.stop>
+                        <div class="bg-slate-100 rounded-xl shadow-2xl border border-slate-200 w-full max-w-lg max-h-[90vh] overflow-y-auto p-6" @click.stop>
                             <div class="flex justify-between items-center mb-5">
                                 <h3 class="text-lg font-medium leading-6 text-gray-100">Edit Ambang Batas</h3>
-                                <button @click="showEditModal = false" class="text-gray-400 hover:text-gray-200 cursor-pointer">
+                                <button @click="showEditModal = false" class="text-slate-500 hover:text-slate-900 cursor-pointer">
                                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                                 </button>
                             </div>
@@ -59,20 +58,20 @@
                                 @csrf @method('PUT')
                                 <input type="hidden" name="threshold_id" value="{{ $t->id }}">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-300 mb-1.5">Minimal Poin Pelanggaran</label>
-                                    <input type="number" name="min_points" value="{{ old('threshold_id') == $t->id ? old('min_points') : $t->min_points }}" required min="1" class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Minimal Poin Pelanggaran</label>
+                                    <input type="number" name="min_points" value="{{ old('threshold_id') == $t->id ? old('min_points') : $t->min_points }}" required min="1" class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-300 mb-1.5">Aksi</label>
-                                    <input type="text" name="action" value="{{ old('threshold_id') == $t->id ? old('action') : $t->action }}" required class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" placeholder="Contoh: Panggilan Orang Tua">
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Aksi</label>
+                                    <input type="text" name="action" value="{{ old('threshold_id') == $t->id ? old('action') : $t->action }}" required class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Contoh: Panggilan Orang Tua">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-300 mb-1.5">Deskripsi</label>
-                                    <textarea name="description" rows="2" class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">{{ old('threshold_id') == $t->id ? old('description') : $t->description }}</textarea>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Deskripsi</label>
+                                    <textarea name="description" rows="2" class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('threshold_id') == $t->id ? old('description') : $t->description }}</textarea>
                                 </div>
-                                <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-700/50 mt-6">
-                                    <button type="button" @click="showEditModal = false" class="px-6 py-2.5 rounded-lg bg-surface-lighter text-gray-300 text-sm hover:bg-gray-600 transition-colors cursor-pointer">Batal</button>
-                                    <button type="submit" class="px-6 py-2.5 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-colors cursor-pointer">Simpan Perubahan</button>
+                                <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 mt-6">
+                                    <button type="button" @click="showEditModal = false" class="px-6 py-2.5 rounded-lg bg-whiteer text-slate-700 text-sm hover:bg-gray-600 transition-colors cursor-pointer">Batal</button>
+                                    <button type="submit" class="px-6 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer">Simpan Perubahan</button>
                                 </div>
                             </form>
                         </div>
@@ -81,7 +80,7 @@
             </template>
         </div>
     @empty
-        <div class="text-center py-12 text-gray-500">Belum ada konfigurasi ambang batas.</div>
+        <div class="text-center py-12 text-slate-400">Belum ada konfigurasi ambang batas.</div>
     @endforelse
 </div>
 
@@ -102,11 +101,11 @@
     <div x-show="showModal"
          class="fixed inset-0 flex items-center justify-center p-4"
          style="z-index:50;">
-        <div class="bg-surface rounded-xl shadow-2xl border border-gray-700/50 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6" @click.stop>
+        <div class="bg-slate-100 rounded-xl shadow-2xl border border-slate-200 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6" @click.stop>
             
                 <div class="flex justify-between items-center mb-5">
                     <h3 class="text-lg font-medium leading-6 text-gray-100" id="modal-title">Tambah Ambang Batas</h3>
-                    <button @click="showModal = false" class="text-gray-400 hover:text-gray-200 cursor-pointer">
+                    <button @click="showModal = false" class="text-slate-500 hover:text-slate-900 cursor-pointer">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                 </div>
@@ -114,20 +113,20 @@
                 <form method="POST" action="{{ route('admin.rule-thresholds.store') }}" class="space-y-5">
                     @csrf
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1.5">Minimal Poin Pelanggaran <span class="text-red-400">*</span></label>
-                        <input type="number" name="min_points" value="{{ old('min_points') }}" required min="1" class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" placeholder="25">
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Minimal Poin Pelanggaran <span class="text-red-400">*</span></label>
+                        <input type="number" name="min_points" value="{{ old('min_points') }}" required min="1" class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="25">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1.5">Aksi <span class="text-red-400">*</span></label>
-                        <input type="text" name="action" value="{{ old('action') }}" required class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" placeholder="Contoh: Panggilan Orang Tua">
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Aksi <span class="text-red-400">*</span></label>
+                        <input type="text" name="action" value="{{ old('action') }}" required class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Contoh: Panggilan Orang Tua">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1.5">Deskripsi</label>
-                        <textarea name="description" rows="2" class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">{{ old('description') }}</textarea>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Deskripsi</label>
+                        <textarea name="description" rows="2" class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('description') }}</textarea>
                     </div>
-                    <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-700/50 mt-6">
-                        <button type="button" @click="showModal = false" class="px-6 py-2.5 rounded-lg bg-surface-lighter text-gray-300 text-sm hover:bg-gray-600 transition-colors cursor-pointer">Batal</button>
-                        <button type="submit" class="px-6 py-2.5 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-colors cursor-pointer">Simpan</button>
+                    <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 mt-6">
+                        <button type="button" @click="showModal = false" class="px-6 py-2.5 rounded-lg bg-whiteer text-slate-700 text-sm hover:bg-gray-600 transition-colors cursor-pointer">Batal</button>
+                        <button type="submit" class="px-6 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer">Simpan</button>
                     </div>
                 </form>
             

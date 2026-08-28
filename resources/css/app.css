@@ -31,30 +31,34 @@
     --color-warning-500: #f59e0b;
     --color-warning-600: #d97706;
 
-    --color-surface: #f8fafc; /* Premium soft slate background */
-    --color-surface-light: #ffffff; /* White cards */
-    --color-surface-lighter: #f1f5f9; /* Slate 100 hover */
+    /* Dynamic Theme Variables */
+    --color-slate-50: var(--slate-50);
+    --color-slate-100: var(--slate-100);
+    --color-slate-200: var(--slate-200);
+    --color-slate-300: var(--slate-300);
+    --color-slate-400: var(--slate-400);
+    --color-slate-500: var(--slate-500);
+    --color-slate-600: var(--slate-600);
+    --color-slate-700: var(--slate-700);
+    --color-slate-800: var(--slate-800);
+    --color-slate-900: var(--slate-900);
 
-    /* Premium Light Theme Palette (Inverted Slate for flawless remapping) */
-    --color-gray-50: #0f172a; /* Headings (Slate 900) */
-    --color-gray-100: #1e293b; /* Body text (Slate 800) */
-    --color-gray-200: #334155; /* Muted text (Slate 700) */
-    --color-gray-300: #475569; /* Secondary text (Slate 600) */
-    --color-gray-400: #64748b; /* Subtle text (Slate 500) */
-    --color-gray-500: #94a3b8; /* Dark borders (Slate 400) */
-    --color-gray-600: #cbd5e1; /* Medium borders (Slate 300) */
-    --color-gray-700: #e2e8f0; /* Light borders (Slate 200) */
-    --color-gray-800: #f1f5f9; /* Soft hover bg (Slate 100) */
-    --color-gray-900: #f8fafc; /* Layout bg (Slate 50) */
+    /* Surface Colors mapped to dynamic slate */
+    --color-surface: var(--slate-50);
+    --color-surface-light: var(--slate-100); /* We will use explicit overrides for white */
+    --color-surface-lighter: var(--slate-200);
 
-    /* Action Button Contrast Fix (Map 400 to 600 for light mode) */
-    --color-red-400: #dc2626; /* red-600 */
-    --color-green-400: #16a34a; /* green-600 */
-    --color-blue-400: #2563eb; /* blue-600 */
-    --color-yellow-400: #d97706; /* yellow-600 */
-    --color-amber-400: #d97706; /* amber-600 */
-    --color-orange-400: #ea580c; /* orange-600 */
-    --color-primary-400: #2563eb; /* primary-600 */
+    /* Legacy gray colors mapped to inverted dynamic slate for backwards compatibility */
+    --color-gray-50: var(--slate-900);
+    --color-gray-100: var(--slate-800);
+    --color-gray-200: var(--slate-700);
+    --color-gray-300: var(--slate-600);
+    --color-gray-400: var(--slate-500);
+    --color-gray-500: var(--slate-400);
+    --color-gray-600: var(--slate-300);
+    --color-gray-700: var(--slate-200);
+    --color-gray-800: var(--slate-100);
+    --color-gray-900: var(--slate-50);
 
     /* Premium Shadows */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -63,21 +67,70 @@
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
 }
 
+:root {
+    --slate-50: #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    --slate-900: #0f172a;
+}
+
+.dark {
+    --slate-50: #0f172a;
+    --slate-100: #1e293b;
+    --slate-200: #334155;
+    --slate-300: #475569;
+    --slate-400: #64748b;
+    --slate-500: #94a3b8;
+    --slate-600: #cbd5e1;
+    --slate-700: #e2e8f0;
+    --slate-800: #f1f5f9;
+    --slate-900: #f8fafc;
+}
+
+/* Explicit Overrides for Hardcoded Light Mode Classes */
+.dark .bg-white, .bg-surface-light {
+    background-color: var(--slate-100) !important;
+}
+.dark .bg-white\/80 {
+    background-color: color-mix(in srgb, var(--slate-100) 80%, transparent) !important;
+}
+html:not(.dark) .bg-surface-light {
+    background-color: #ffffff !important;
+}
+.dark .hover\:bg-white:hover {
+    background-color: var(--slate-100) !important;
+}
+.dark .border-white {
+    border-color: var(--slate-200) !important;
+}
+.dark .ring-white {
+    --tw-ring-color: var(--slate-200) !important;
+}
+.dark .text-slate-900 {
+    color: var(--slate-800) !important; /* Note: inverted slate-800 is light #f1f5f9 */
+}
+
 /* TomSelect Light Theme Overrides */
 .ts-control {
-    background-color: var(--color-surface-light) !important;
-    border-color: #d1d5db !important;
-    color: #1f2937 !important;
+    background-color: var(--color-slate-100) !important;
+    border-color: var(--color-slate-300) !important;
+    color: var(--color-slate-900) !important;
     border-radius: 0.5rem !important;
     padding: 0.625rem 1rem !important;
 }
 .ts-control > input {
-    color: #1f2937 !important;
+    color: var(--color-slate-900) !important;
 }
 .ts-dropdown {
-    background-color: var(--color-surface-light) !important;
-    border-color: #d1d5db !important;
-    color: #1f2937 !important;
+    background-color: var(--color-slate-100) !important;
+    border-color: var(--color-slate-300) !important;
+    color: var(--color-slate-900) !important;
     border-radius: 0.5rem !important;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
 }
@@ -85,11 +138,20 @@
     padding: 0.5rem 1rem;
 }
 .ts-dropdown .option:hover, .ts-dropdown .option.active {
-    background-color: var(--color-surface-lighter) !important;
-    color: #2563eb !important;
+    background-color: var(--color-slate-200) !important;
+    color: var(--color-primary-600) !important;
 }
 .ts-wrapper.single .ts-control::after {
     border-color: #6b7280 transparent transparent transparent !important;
+}
+
+/* SweetAlert Dark Theme Overrides */
+.dark .swal2-popup {
+    background-color: var(--color-slate-100) !important;
+    color: var(--color-slate-900) !important;
+}
+.dark .swal2-title, .dark .swal2-html-container {
+    color: var(--color-slate-900) !important;
 }
 
 [x-cloak] { display: none !important; }

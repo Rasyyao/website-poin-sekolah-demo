@@ -60,6 +60,9 @@ Route::prefix('admin')
 
         Route::resource('classes', Admin\ClassController::class);
 
+        Route::get('students/import/template', [Admin\StudentImportController::class, 'template'])->name('students.import.template');
+        Route::post('students/import/parse', [Admin\StudentImportController::class, 'parse'])->name('students.import.parse');
+        Route::post('students/import/process', [Admin\StudentImportController::class, 'process'])->name('students.import.process');
         Route::resource('students', Admin\StudentController::class);
         Route::post('students/{student}/generate-access-code', [Admin\StudentController::class, 'generateAccessCode'])->name('students.generate-access-code');
         Route::post('students/bulk-migrate', [Admin\StudentController::class, 'bulkMigrate'])->name('students.bulk-migrate');
@@ -83,6 +86,7 @@ Route::prefix('admin')
 
         // Reports & Dashboard
         Route::get('reports/dashboard', [Admin\ReportController::class, 'dashboard'])->name('reports.dashboard');
+        Route::get('reports/dashboard/export', [Admin\ReportController::class, 'exportDashboard'])->name('reports.dashboard.export');
         Route::get('reports/ranking', [Admin\ReportController::class, 'ranking'])->name('reports.ranking');
         Route::get('reports/student/{student}', [Admin\ReportController::class, 'studentReport'])->name('reports.student');
         Route::get('reports/student/{student}/export/pdf', [Admin\ReportController::class, 'exportStudentPdf'])->name('reports.student.export.pdf');

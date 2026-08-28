@@ -4,8 +4,6 @@
 @section('page-header', 'Daftar Peraturan')
 @section('page-desc', 'Kelola daftar aturan pelanggaran, prestasi, dan bobot poinnya')
 @section('page-actions')
-    <p class="text-sm text-gray-400 mr-2">Total: <span class="font-semibold text-gray-200">{{ $grouped->flatten()->count() }}</span> peraturan</p>
-    <button x-data @click="$dispatch('open-modal')" class="px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-colors cursor-pointer">+ Tambah Peraturan</button>
 @endsection
 @section('content')
 <div x-data="{ showModal: {{ (old('_method') !== 'PUT' && $errors->any()) ? 'true' : 'false' }} }" @open-modal.window="showModal = true">
@@ -38,11 +36,11 @@
 
     @foreach($groups as $typeKey => $group)
         @php $rules = $grouped->get($typeKey, collect()); @endphp
-        <div x-data="{ open: true }" class="rounded-xl border border-gray-700/50 overflow-hidden">
+        <div x-data="{ open: true }" class="rounded-xl border border-slate-200 overflow-hidden">
 
             {{-- Accordion Header --}}
             <button @click="open = !open"
-                    class="w-full flex items-center justify-between px-5 py-4 bg-surface-light hover:bg-surface-lighter transition-colors cursor-pointer">
+                    class="w-full flex items-center justify-between px-5 py-4 bg-white hover:bg-whiteer transition-colors cursor-pointer">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-lg {{ $group['bg'] }} {{ $group['border'] }} border flex items-center justify-center">
                         <svg class="w-4 h-4 {{ $group['text'] }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,10 +49,10 @@
                     </div>
                     <div class="text-left">
                         <p class="text-sm font-semibold text-gray-100">{{ $group['label'] }}</p>
-                        <p class="text-xs text-gray-500">{{ $rules->count() }} peraturan</p>
+                        <p class="text-xs text-slate-400">{{ $rules->count() }} peraturan</p>
                     </div>
                 </div>
-                <svg class="w-5 h-5 text-gray-400 transition-transform duration-200"
+                <svg class="w-5 h-5 text-slate-500 transition-transform duration-200"
                      :class="open ? 'rotate-180' : 'rotate-0'"
                      fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -72,39 +70,39 @@
                 <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="border-t border-gray-700/50 bg-surface-lighter/50">
-                            <th class="px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Nama</th>
-                            <th class="px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Kategori</th>
-                            <th class="px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider text-center">Poin</th>
-                            <th class="px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider text-center">Status</th>
-                            <th class="px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider text-right">Aksi</th>
+                        <tr class="border-t border-slate-200 bg-whiteer/50">
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Kategori</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Poin</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Status</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-700/30 bg-surface-light">
+                    <tbody class="divide-y divide-slate-100 bg-white">
                         @forelse($rules as $rule)
-                            <tr class="hover:bg-surface-lighter/30 transition-colors group" x-data="{ showEditModal: {{ (old('_method') == 'PUT' && old('rule_id') == $rule->id && $errors->any()) ? 'true' : 'false' }} }" {{ !$rule->is_active ? 'opacity-40' : '' }}>
-                                <td class="px-6 py-4 text-sm text-gray-200">
-                                    <div class="flex items-center gap-2 group-hover:text-primary-300 transition-colors">
+                            <tr class="hover:bg-whiteer/30 transition-colors group" x-data="{ showEditModal: {{ (old('_method') == 'PUT' && old('rule_id') == $rule->id && $errors->any()) ? 'true' : 'false' }} }" {{ !$rule->is_active ? 'opacity-40' : '' }}>
+                                <td class="px-6 py-4 text-sm text-slate-900">
+                                    <div class="flex items-center gap-2 group-hover:text-blue-600 transition-colors">
                                         <div class="w-1.5 h-1.5 rounded-full {{ $group['dot'] }} flex-shrink-0"></div>
                                         {{ $rule->name }}
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-400">
+                                <td class="px-6 py-4 text-sm text-slate-500">
                                     @if($rule->category)
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-700/50 text-gray-300 border border-gray-600/50">{{ $rule->category->label() }}</span>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-700/50 text-slate-700 border border-slate-200">{{ $rule->category->label() }}</span>
                                     @else
                                         <span class="text-gray-600">—</span>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 text-center">
-                                    <div class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-surface text-sm font-bold border {{ $rule->type->value === 'violation' ? 'border-red-500/20 text-red-400' : 'border-green-500/20 text-green-400' }}">
+                                    <div class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-slate-100 text-sm font-bold border {{ $rule->type->value === 'violation' ? 'border-red-500/20 text-red-400' : 'border-green-500/20 text-green-400' }}">
                                         {{ $rule->type->value === 'achievement' ? '+' : '' }}{{ $rule->points }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     <form method="POST" action="{{ route('admin.rules.toggle-active', $rule) }}" class="inline">
                                         @csrf
-                                        <button type="submit" class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border transition-colors cursor-pointer {{ $rule->is_active ? 'bg-green-500/10 text-green-400 border-green-500/20 hover:bg-green-500/20' : 'bg-gray-500/10 text-gray-500 border-gray-500/20 hover:bg-gray-500/20 hover:text-gray-300' }}">
+                                        <button type="submit" class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border transition-colors cursor-pointer {{ $rule->is_active ? 'bg-green-500/10 text-green-400 border-green-500/20 hover:bg-green-500/20' : 'bg-gray-500/10 text-slate-400 border-gray-500/20 hover:bg-gray-500/20 hover:text-slate-700' }}">
                                             {{ $rule->is_active ? 'Aktif' : 'Nonaktif' }}
                                         </button>
                                     </form>
@@ -135,10 +133,10 @@
 
                                             <div x-show="showEditModal"
                                                  class="fixed inset-0 flex items-center justify-center p-4 z-[50]" x-cloak>
-                                                <div class="bg-surface rounded-xl shadow-2xl border border-gray-700/50 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6" @click.stop>
+                                                <div class="bg-slate-100 rounded-xl shadow-2xl border border-slate-200 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6" @click.stop>
                                                     <div class="flex justify-between items-center mb-5">
                                                         <h3 class="text-lg font-medium leading-6 text-gray-100">Edit Peraturan</h3>
-                                                        <button @click="showEditModal = false" class="text-gray-400 hover:text-gray-200 cursor-pointer">
+                                                        <button @click="showEditModal = false" class="text-slate-500 hover:text-slate-900 cursor-pointer">
                                                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                                                         </button>
                                                     </div>
@@ -147,20 +145,20 @@
                                                         @csrf @method('PUT')
                                                         <input type="hidden" name="rule_id" value="{{ $rule->id }}">
                                                         <div>
-                                                            <label class="block text-sm font-medium text-gray-300 mb-1.5">Nama Peraturan <span class="text-red-400">*</span></label>
-                                                            <input type="text" name="name" value="{{ old('rule_id') == $rule->id ? old('name') : $rule->name }}" required class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama Peraturan <span class="text-red-400">*</span></label>
+                                                            <input type="text" name="name" value="{{ old('rule_id') == $rule->id ? old('name') : $rule->name }}" required class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                         </div>
                                                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
                                                             <div>
-                                                                <label class="block text-sm font-medium text-gray-300 mb-1.5">Tipe <span class="text-red-400">*</span></label>
-                                                                <select name="type" required class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                                                <label class="block text-sm font-medium text-slate-700 mb-1.5">Tipe <span class="text-red-400">*</span></label>
+                                                                <select name="type" required class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                                     <option value="violation" {{ (old('rule_id') == $rule->id ? old('type') : $rule->type->value) === 'violation' ? 'selected' : '' }}>Pelanggaran</option>
                                                                     <option value="achievement" {{ (old('rule_id') == $rule->id ? old('type') : $rule->type->value) === 'achievement' ? 'selected' : '' }}>Prestasi</option>
                                                                 </select>
                                                             </div>
                                                             <div>
-                                                                <label class="block text-sm font-medium text-gray-300 mb-1.5">Kategori</label>
-                                                                <select name="category" class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                                                <label class="block text-sm font-medium text-slate-700 mb-1.5">Kategori</label>
+                                                                <select name="category" class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                                     <option value="">-- Tidak ada --</option>
                                                                     <option value="ringan" {{ (old('rule_id') == $rule->id ? old('category') : $rule->category?->value) === 'ringan' ? 'selected' : '' }}>Ringan</option>
                                                                     <option value="sedang" {{ (old('rule_id') == $rule->id ? old('category') : $rule->category?->value) === 'sedang' ? 'selected' : '' }}>Sedang</option>
@@ -168,17 +166,17 @@
                                                                 </select>
                                                             </div>
                                                             <div>
-                                                                <label class="block text-sm font-medium text-gray-300 mb-1.5">Bobot Poin <span class="text-red-400">*</span></label>
-                                                                <input type="number" name="points" value="{{ old('rule_id') == $rule->id ? old('points') : $rule->points }}" required class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                                                <label class="block text-sm font-medium text-slate-700 mb-1.5">Bobot Poin <span class="text-red-400">*</span></label>
+                                                                <input type="number" name="points" value="{{ old('rule_id') == $rule->id ? old('points') : $rule->points }}" required class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                             </div>
                                                         </div>
                                                         <div>
-                                                            <label class="block text-sm font-medium text-gray-300 mb-1.5">Deskripsi</label>
-                                                            <textarea name="description" rows="3" class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">{{ old('rule_id') == $rule->id ? old('description') : $rule->description }}</textarea>
+                                                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Deskripsi</label>
+                                                            <textarea name="description" rows="3" class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('rule_id') == $rule->id ? old('description') : $rule->description }}</textarea>
                                                         </div>
-                                                        <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-700/50 mt-6">
-                                                            <button type="button" @click="showEditModal = false" class="px-6 py-2.5 rounded-lg bg-surface-lighter text-gray-300 text-sm hover:bg-gray-600 transition-colors cursor-pointer">Batal</button>
-                                                            <button type="submit" class="px-6 py-2.5 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-colors cursor-pointer">Simpan Perubahan</button>
+                                                        <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 mt-6">
+                                                            <button type="button" @click="showEditModal = false" class="px-6 py-2.5 rounded-lg bg-whiteer text-slate-700 text-sm hover:bg-gray-600 transition-colors cursor-pointer">Batal</button>
+                                                            <button type="submit" class="px-6 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer">Simpan Perubahan</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -189,7 +187,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-8 text-center text-sm text-gray-500 italic">Belum ada peraturan {{ $group['label'] }}.</td>
+                                <td colspan="5" class="px-6 py-8 text-center text-sm text-slate-400 italic">Belum ada peraturan {{ $group['label'] }}.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -215,11 +213,11 @@
     <div x-show="showModal"
          class="fixed inset-0 flex items-center justify-center p-4"
          style="z-index:50;">
-        <div class="bg-surface rounded-xl shadow-2xl border border-gray-700/50 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6" @click.stop>
+        <div class="bg-slate-100 rounded-xl shadow-2xl border border-slate-200 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6" @click.stop>
 
                 <div class="flex justify-between items-center mb-5">
                     <h3 class="text-lg font-medium leading-6 text-gray-100" id="modal-title">Tambah Peraturan Baru</h3>
-                    <button @click="showModal = false" class="text-gray-400 hover:text-gray-200 cursor-pointer">
+                    <button @click="showModal = false" class="text-slate-500 hover:text-slate-900 cursor-pointer">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                 </div>
@@ -227,20 +225,20 @@
                 <form method="POST" action="{{ route('admin.rules.store') }}" class="space-y-5">
                     @csrf
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1.5">Nama Peraturan <span class="text-red-400">*</span></label>
-                        <input type="text" name="name" value="{{ old('name') }}" required class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" placeholder="contoh: Terlambat masuk sekolah">
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Nama Peraturan <span class="text-red-400">*</span></label>
+                        <input type="text" name="name" value="{{ old('name') }}" required class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="contoh: Terlambat masuk sekolah">
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
                         <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-1.5">Tipe <span class="text-red-400">*</span></label>
-                            <select name="type" required class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Tipe <span class="text-red-400">*</span></label>
+                            <select name="type" required class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="violation" {{ old('type') === 'violation' ? 'selected' : '' }}>Pelanggaran</option>
                                 <option value="achievement" {{ old('type') === 'achievement' ? 'selected' : '' }}>Prestasi</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-1.5">Kategori</label>
-                            <select name="category" class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Kategori</label>
+                            <select name="category" class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="">-- Tidak ada --</option>
                                 <option value="ringan" {{ old('category') === 'ringan' ? 'selected' : '' }}>Ringan</option>
                                 <option value="sedang" {{ old('category') === 'sedang' ? 'selected' : '' }}>Sedang</option>
@@ -248,17 +246,17 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-1.5">Bobot Poin <span class="text-red-400">*</span></label>
-                            <input type="number" name="points" value="{{ old('points') }}" required class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500" placeholder="10">
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">Bobot Poin <span class="text-red-400">*</span></label>
+                            <input type="number" name="points" value="{{ old('points') }}" required class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="10">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1.5">Deskripsi</label>
-                        <textarea name="description" rows="3" class="w-full px-4 py-2.5 rounded-lg bg-surface-light border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">{{ old('description') }}</textarea>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Deskripsi</label>
+                        <textarea name="description" rows="3" class="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-600 text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('description') }}</textarea>
                     </div>
-                    <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-700/50 mt-6">
-                        <button type="button" @click="showModal = false" class="px-6 py-2.5 rounded-lg bg-surface-lighter text-gray-300 text-sm hover:bg-gray-600 transition-colors cursor-pointer">Batal</button>
-                        <button type="submit" class="px-6 py-2.5 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-colors cursor-pointer">Simpan</button>
+                    <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 mt-6">
+                        <button type="button" @click="showModal = false" class="px-6 py-2.5 rounded-lg bg-whiteer text-slate-700 text-sm hover:bg-gray-600 transition-colors cursor-pointer">Batal</button>
+                        <button type="submit" class="px-6 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer">Simpan</button>
                     </div>
                 </form>
 
