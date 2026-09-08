@@ -34,9 +34,9 @@
                         <input type="text"
                                name="website_name"
                                id="website_name"
-                               value="{{ old('website_name', $school?->settings['website_name'] ?? 'Poin Sekolah') }}"
+                               value="{{ old('website_name', $school?->settings['website_name'] ?? 'Sistem Poin Sekolah') }}"
                                required
-                               placeholder="Contoh: Poin Sekolah, Portal Kedisiplinan"
+                               placeholder="Contoh: Sistem Poin Sekolah, Portal Kedisiplinan"
                                class="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <p class="text-xs text-slate-400 mt-1.5">Nama ini tampil di sidebar, bilah judul navigasi, tab browser, dan halaman login.</p>
                     </div>

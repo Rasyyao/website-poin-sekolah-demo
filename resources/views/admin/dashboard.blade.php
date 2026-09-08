@@ -87,29 +87,65 @@
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-        <div class="flex items-center justify-between mb-6">
+    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-2">
             <h3 class="font-semibold text-slate-900">Tren Poin</h3>
         </div>
-        <div class="relative h-64 w-full">
+        <div class="relative w-full" style="height: 200px;">
             <canvas id="dashboardChart"></canvas>
         </div>
     </div>
     
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-        <div class="flex items-center justify-between mb-6">
-            <h3 class="font-semibold text-slate-900">Aktivitas Harian</h3>
-            <button class="text-slate-400 hover:text-slate-600">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"/></svg>
-            </button>
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between">
+        <div>
+            <div class="flex items-center justify-between mb-2">
+                <div>
+                    <h3 class="font-semibold text-slate-900">Persebaran Siswa</h3>
+                    <p class="text-xs text-slate-400 mt-0.5">Jumlah siswa per kelas</p>
+                </div>
+                <span class="text-xs font-semibold px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full">
+                    {{ $classDistributionData['total_classes'] ?? count($classDistributionData['labels']) }} Kelas
+                </span>
+            </div>
+
+            <div class="relative w-full flex items-center justify-center my-1" style="height: 140px; max-width: 140px; margin-left: auto; margin-right: auto;">
+                @if(!empty($classDistributionData['data']) && array_sum($classDistributionData['data']) > 0)
+                    <canvas id="classDistributionChart"></canvas>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                        <span class="text-xl font-bold text-slate-900 tracking-tight leading-none">{{ $classDistributionData['total_students'] ?? 0 }}</span>
+                        <span class="text-[10px] font-medium text-slate-400 mt-0.5">Total Siswa</span>
+                    </div>
+                @else
+                    <div class="text-center py-4">
+                        <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-1 text-slate-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <p class="text-xs text-slate-400">Belum ada data siswa.</p>
+                    </div>
+                @endif
+            </div>
         </div>
-        <div class="relative h-64 w-full flex items-center justify-center">
-            @if(count($classDistributionData['data']) > 0)
-                <canvas id="classDistributionChart"></canvas>
-            @else
-                <p class="text-sm text-slate-400">Belum ada data aktivitas.</p>
-            @endif
-        </div>
+
+        @if(!empty($classDistributionData['labels']) && array_sum($classDistributionData['data']) > 0)
+            <div class="mt-2 pt-2 border-t border-slate-100 flex flex-wrap items-center justify-center gap-1.5 max-h-20 overflow-y-auto">
+                @php
+                    $palette = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316', '#6366f1'];
+                @endphp
+                @foreach($classDistributionData['labels'] as $idx => $className)
+                    @php
+                        $color = $palette[$idx % count($palette)];
+                        $count = $classDistributionData['data'][$idx] ?? 0;
+                        $percent = $classDistributionData['total_students'] > 0 ? round(($count / $classDistributionData['total_students']) * 100) : 0;
+                    @endphp
+                    <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-slate-50 border border-slate-100 text-[11px]">
+                        <span class="w-2 h-2 rounded-full shrink-0" style="background-color: {{ $color }}"></span>
+                        <span class="font-medium text-slate-700">{{ $className }}</span>
+                        <span class="font-bold text-slate-900 ml-0.5">{{ $count }}</span>
+                        <span class="text-[9px] text-slate-400">({{ $percent }}%)</span>
+                    </div>
+                @endforeach
+            </div>
+        @endif
     </div>
 </div>
 
@@ -183,7 +219,7 @@
         const ctx = document.getElementById('dashboardChart').getContext('2d');
         const chartData = @json($chartData);
         
-        let gradientBlue = ctx.createLinearGradient(0, 0, 0, 400);
+        let gradientBlue = ctx.createLinearGradient(0, 0, 0, 200);
         gradientBlue.addColorStop(0, 'rgba(59, 130, 246, 0.2)'); // blue-500
         gradientBlue.addColorStop(1, 'rgba(59, 130, 246, 0)');
 
@@ -255,28 +291,30 @@
             }
         });
 
-        // Aktivitas Harian - Bar Chart (like Most Day Active)
-        @if(count($classDistributionData['data']) > 0)
+        // Persebaran Siswa per Kelas - Doughnut Chart
+        @if(!empty($classDistributionData['data']) && array_sum($classDistributionData['data']) > 0)
         const classCtx = document.getElementById('classDistributionChart').getContext('2d');
         const classData = @json($classDistributionData);
-        const barBaseColor = isDark ? '#1e293b' : '#e2e8f0'; // slate-800 vs slate-200
-        
+        const palette = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316', '#6366f1'];
+        const sliceColors = classData.labels.map((_, i) => palette[i % palette.length]);
+
         new Chart(classCtx, {
-            type: 'bar',
+            type: 'doughnut',
             data: {
                 labels: classData.labels,
                 datasets: [{
                     data: classData.data,
-                    backgroundColor: barBaseColor,
-                    hoverBackgroundColor: '#3b82f6', // blue-500 on hover
-                    borderRadius: 6,
-                    borderSkipped: false,
-                    barThickness: 20
+                    backgroundColor: sliceColors,
+                    hoverBackgroundColor: sliceColors,
+                    borderWidth: 2,
+                    borderColor: isDark ? '#1e293b' : '#ffffff',
+                    hoverOffset: 4
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                cutout: '68%',
                 plugins: {
                     legend: {
                         display: false
@@ -287,29 +325,20 @@
                         bodyColor: tooltipBody,
                         borderColor: tooltipBorder,
                         borderWidth: 1,
-                        displayColors: false
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: { display: false, drawBorder: false },
-                        ticks: { color: tickColor, font: {size: 11} },
-                        border: { display: false }
-                    },
-                    y: {
-                        display: false,
-                        beginAtZero: true
+                        padding: 10,
+                        boxPadding: 4,
+                        callbacks: {
+                            label: function(context) {
+                                const val = context.parsed || 0;
+                                const total = classData.total_students || 1;
+                                const pct = ((val / total) * 100).toFixed(1);
+                                return ` ${val} Siswa (${pct}%)`;
+                            }
+                        }
                     }
                 }
             }
         });
-        
-        // Make the highest value blue
-        const chart = Chart.getChart("classDistributionChart");
-        const maxVal = Math.max(...chart.data.datasets[0].data);
-        const bgColors = chart.data.datasets[0].data.map(val => val === maxVal ? '#3b82f6' : barBaseColor);
-        chart.data.datasets[0].backgroundColor = bgColors;
-        chart.update();
         @endif
 
         // Listen for theme changes to update charts dynamically
@@ -320,7 +349,6 @@
             const newTooltipTitle = isDarkNow ? '#f8fafc' : '#0f172a';
             const newTooltipBody = isDarkNow ? '#cbd5e1' : '#475569';
             const newTooltipBorder = isDarkNow ? '#334155' : '#e2e8f0';
-            const newBarBaseColor = isDarkNow ? '#1e293b' : '#e2e8f0';
             const newPointBg = isDarkNow ? '#0f172a' : '#ffffff';
 
             const lineChart = Chart.getChart('dashboardChart');
@@ -334,16 +362,14 @@
                 lineChart.update();
             }
 
-            const barChart = Chart.getChart('classDistributionChart');
-            if (barChart) {
-                barChart.options.plugins.tooltip.backgroundColor = newTooltipBg;
-                barChart.options.plugins.tooltip.titleColor = newTooltipTitle;
-                barChart.options.plugins.tooltip.bodyColor = newTooltipBody;
-                barChart.options.plugins.tooltip.borderColor = newTooltipBorder;
-                
-                const maxV = Math.max(...barChart.data.datasets[0].data);
-                barChart.data.datasets[0].backgroundColor = barChart.data.datasets[0].data.map(val => val === maxV ? '#3b82f6' : newBarBaseColor);
-                barChart.update();
+            const doughnutChart = Chart.getChart('classDistributionChart');
+            if (doughnutChart) {
+                doughnutChart.options.plugins.tooltip.backgroundColor = newTooltipBg;
+                doughnutChart.options.plugins.tooltip.titleColor = newTooltipTitle;
+                doughnutChart.options.plugins.tooltip.bodyColor = newTooltipBody;
+                doughnutChart.options.plugins.tooltip.borderColor = newTooltipBorder;
+                doughnutChart.data.datasets[0].borderColor = isDarkNow ? '#1e293b' : '#ffffff';
+                doughnutChart.update();
             }
         });
     });

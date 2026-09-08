@@ -75,6 +75,10 @@ Route::prefix('admin')
             Route::resource('rule-thresholds', RuleThresholdController::class)->except(['show']);
             Route::get('exports/staff/{format}', [ExportController::class, 'staff'])->name('exports.staff');
             Route::get('exports/thresholds/{format}', [ExportController::class, 'thresholds'])->name('exports.thresholds');
+
+            // Manage Rules (Super Admin & Admin Sekolah ONLY)
+            Route::resource('rules', RuleController::class)->except(['index', 'show']);
+            Route::post('rules/{rule}/toggle-active', [RuleController::class, 'toggleActive'])->name('rules.toggle-active');
         });
 
         // Master Data & Operasional Poin (Super Admin, Admin Sekolah, & Kesiswaan)
@@ -88,8 +92,8 @@ Route::prefix('admin')
             Route::resource('students', StudentController::class);
             Route::post('students/{student}/generate-access-code', [StudentController::class, 'generateAccessCode'])->name('students.generate-access-code');
 
-            Route::resource('rules', RuleController::class);
-            Route::post('rules/{rule}/toggle-active', [RuleController::class, 'toggleActive'])->name('rules.toggle-active');
+            // View Rules
+            Route::resource('rules', RuleController::class)->only(['index', 'show']);
 
             // Operasional Poin
             Route::get('points-log', [PointsLogController::class, 'index'])->name('points-log.index');
@@ -152,7 +156,7 @@ Route::prefix('student')
         Route::post('appeals', [StudentAppealController::class, 'store'])->name('appeals.store');
     });
 
-// ── Orang Tua Routes ───────────────────────────────────────────────────
+
 
 Route::prefix('parent')
     ->name('parent.')

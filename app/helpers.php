@@ -10,18 +10,28 @@ if (! function_exists('website_name')) {
     {
         try {
             if (auth()->check() && auth()->user()->school) {
-                return auth()->user()->school->settings['website_name'] 
-                    ?? config('app.name', 'Poin Sekolah');
+                $name = auth()->user()->school->settings['website_name'] ?? null;
+                if (! empty($name) && $name !== 'Laravel') {
+                    return $name;
+                }
             }
 
             $firstSchool = School::first();
-            if ($firstSchool && ! empty($firstSchool->settings['website_name'])) {
-                return $firstSchool->settings['website_name'];
+            if ($firstSchool) {
+                $name = $firstSchool->settings['website_name'] ?? null;
+                if (! empty($name) && $name !== 'Laravel') {
+                    return $name;
+                }
             }
         } catch (\Throwable $e) {
             // fallback
         }
 
-        return config('app.name', 'Poin Sekolah');
+        $appName = config('app.name');
+        if (! empty($appName) && $appName !== 'Laravel') {
+            return $appName;
+        }
+
+        return 'Sistem Poin Sekolah';
     }
 }

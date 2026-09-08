@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\RuleCategoryCast;
 use App\Enums\RuleType;
 use App\Enums\ViolationCategory;
 use App\Models\Concerns\BelongsToSchool;
@@ -27,7 +28,7 @@ class Rule extends Model
     {
         return [
             'type' => RuleType::class,
-            'category' => ViolationCategory::class,
+            'category' => RuleCategoryCast::class,
             'points' => 'integer',
             'is_active' => 'boolean',
         ];
@@ -65,7 +66,12 @@ class Rule extends Model
                 WHEN category = 'ringan' THEN 1 
                 WHEN category = 'sedang' THEN 2 
                 WHEN category = 'berat' THEN 3 
-                ELSE 4 
+                WHEN category = 'akademik' THEN 4
+                WHEN category = 'non_akademik' THEN 5
+                WHEN category = 'kedisiplinan' THEN 6
+                WHEN category = 'organisasi' THEN 7
+                WHEN category = 'sosial' THEN 8
+                ELSE 9 
             END")
             ->orderBy('points', 'asc')
             ->orderBy('name', 'asc');

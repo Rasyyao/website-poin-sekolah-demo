@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\AchievementCategory;
 use App\Enums\PointsLogStatus;
 use App\Enums\RuleType;
 use App\Enums\Semester;
@@ -33,6 +34,9 @@ class DatabaseSeeder extends Seeder
             'name' => 'SMP Negeri 1 Demo',
             'slug' => 'smpn1-demo-' . Str::random(5),
             'subscription_status' => SubscriptionStatus::Active,
+            'settings' => [
+                'website_name' => 'Sistem Poin Sekolah',
+            ],
         ]);
 
         // ── School Staff ────────────────────────────────────
@@ -142,13 +146,15 @@ class DatabaseSeeder extends Seeder
         // Violations
         $violationData = [
             ['name' => 'Terlambat masuk sekolah', 'cat' => ViolationCategory::Ringan, 'pts' => 5],
-            ['name' => 'Tidak memakai seragam lengkap', 'cat' => ViolationCategory::Ringan, 'pts' => 5],
-            ['name' => 'Tidak mengerjakan PR', 'cat' => ViolationCategory::Ringan, 'pts' => 10],
-            ['name' => 'Membolos pelajaran', 'cat' => ViolationCategory::Sedang, 'pts' => 20],
-            ['name' => 'Berkata kasar/tidak sopan', 'cat' => ViolationCategory::Sedang, 'pts' => 15],
-            ['name' => 'Berkelahi di sekolah', 'cat' => ViolationCategory::Berat, 'pts' => 50],
-            ['name' => 'Membawa rokok/vape', 'cat' => ViolationCategory::Berat, 'pts' => 75],
-            ['name' => 'Bullying/intimidasi', 'cat' => ViolationCategory::Berat, 'pts' => 100],
+            ['name' => 'Tidak memakai seragam lengkap / atribut', 'cat' => ViolationCategory::Ringan, 'pts' => 5],
+            ['name' => 'Tidak mengerjakan PR / tugas', 'cat' => ViolationCategory::Ringan, 'pts' => 10],
+            ['name' => 'Membuang sampah sembarangan', 'cat' => ViolationCategory::Ringan, 'pts' => 5],
+            ['name' => 'Membolos pelajaran / jam kosong', 'cat' => ViolationCategory::Sedang, 'pts' => 20],
+            ['name' => 'Berkata kasar / tidak sopan kepada guru/teman', 'cat' => ViolationCategory::Sedang, 'pts' => 15],
+            ['name' => 'Meninggalkan sekolah tanpa izin', 'cat' => ViolationCategory::Sedang, 'pts' => 25],
+            ['name' => 'Berkelahi di lingkungan sekolah', 'cat' => ViolationCategory::Berat, 'pts' => 50],
+            ['name' => 'Membawa rokok / vape', 'cat' => ViolationCategory::Berat, 'pts' => 75],
+            ['name' => 'Bullying / intimidasi siswa lain', 'cat' => ViolationCategory::Berat, 'pts' => 100],
         ];
 
         foreach ($violationData as $v) {
@@ -165,10 +171,17 @@ class DatabaseSeeder extends Seeder
 
         // Achievements
         $achievementData = [
-            ['name' => 'Juara kelas', 'pts' => 50],
-            ['name' => 'Juara lomba tingkat kota', 'pts' => 75],
-            ['name' => 'Ketua OSIS', 'pts' => 30],
-            ['name' => 'Membantu kegiatan sekolah', 'pts' => 15],
+            ['name' => 'Juara 1 Kelas / Peringkat Umum', 'cat' => AchievementCategory::Akademik, 'pts' => 50],
+            ['name' => 'Juara Olimpiade Sains / Lomba Akademik Kota', 'cat' => AchievementCategory::Akademik, 'pts' => 75],
+            ['name' => 'Juara Lomba Akademik Tingkat Provinsi / Nasional', 'cat' => AchievementCategory::Akademik, 'pts' => 100],
+            ['name' => 'Juara Turnamen Olahraga / Seni Tingkat Kota', 'cat' => AchievementCategory::NonAkademik, 'pts' => 60],
+            ['name' => 'Juara Festival Seni / Olahraga Tingkat Nasional', 'cat' => AchievementCategory::NonAkademik, 'pts' => 90],
+            ['name' => 'Ketua OSIS / MPK', 'cat' => AchievementCategory::Organisasi, 'pts' => 40],
+            ['name' => 'Pengurus OSIS / MPK / Ketua Ekstrakurikuler Aktif', 'cat' => AchievementCategory::Organisasi, 'pts' => 25],
+            ['name' => 'Kehadiran 100% Selama Satu Semester (Nir-Absen)', 'cat' => AchievementCategory::Kedisiplinan, 'pts' => 35],
+            ['name' => 'Siswa Teladan & Berperilaku Positif', 'cat' => AchievementCategory::Kedisiplinan, 'pts' => 20],
+            ['name' => 'Relawan & Koordinator Bakti Sosial Sekolah', 'cat' => AchievementCategory::Sosial, 'pts' => 25],
+            ['name' => 'Duta Kebersihan & Pelestarian Lingkungan Sekolah', 'cat' => AchievementCategory::Sosial, 'pts' => 20],
         ];
 
         foreach ($achievementData as $a) {
@@ -176,7 +189,7 @@ class DatabaseSeeder extends Seeder
                 'school_id' => $school->id,
                 'name' => $a['name'],
                 'type' => RuleType::Achievement,
-                'category' => null,
+                'category' => $a['cat'],
                 'points' => $a['pts'],
                 'description' => 'Prestasi: ' . $a['name'],
                 'is_active' => true,

@@ -203,29 +203,23 @@ class ReportService
     }
 
     /**
-     * Get class distribution with most violation points in the last N days.
+     * Get class distribution with student count.
      */
-    public function dashboardClassDistribution(int $schoolId, int $days = 30): array
+    public function dashboardClassDistribution(int $schoolId): array
     {
-        $startDate = now()->subDays($days - 1)->startOfDay();
-
-        $logs = PointsLog::withoutGlobalScopes()
-            ->join('students', 'points_log.student_id', '=', 'students.id')
-            ->join('classes', 'students.class_id', '=', 'classes.id')
-            ->where('points_log.school_id', $schoolId)
-            ->where('points_log.status', 'approved')
-            ->where('points_log.occurred_at', '>=', $startDate)
-            ->join('rules', 'points_log.rule_id', '=', 'rules.id')
-            ->where('rules.type', 'violation')
-            ->select('classes.name as class_name', DB::raw('SUM(points_log.points) as total_violations'))
-            ->groupBy('classes.id', 'classes.name')
-            ->orderByDesc('total_violations')
-            ->limit(5)
+        $classes = \App\Models\SchoolClass::withoutGlobalScopes()
+            ->where('school_id', $schoolId)
+            ->withCount(['students' => function ($query) use ($schoolId) {
+                $query->withoutGlobalScopes()->where('school_id', $schoolId);
+            }])
+            ->orderBy('name')
             ->get();
 
         return [
-            'labels' => $logs->pluck('class_name')->toArray(),
-            'data' => $logs->pluck('total_violations')->toArray(),
+            'labels' => $classes->pluck('name')->toArray(),
+            'data' => $classes->pluck('students_count')->map(fn($v) => (int) $v)->toArray(),
+            'total_students' => (int) $classes->sum('students_count'),
+            'total_classes' => $classes->count(),
         ];
     }
 

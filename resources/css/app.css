@@ -174,3 +174,62 @@ html:not(.dark) .bg-surface-light {
 }
 
 [x-cloak] { display: none !important; }
+
+/* Rule Category Badges */
+.badge-cat {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 600;
+    border-width: 1px;
+    border-style: solid;
+}
+.badge-cat.cat-ringan {
+    background-color: #fef3c7;
+    color: #92400e;
+    border-color: #fcd34d;
+}
+.badge-cat.cat-sedang {
+    background-color: #ffedd5;
+    color: #9a3412;
+    border-color: #fdba74;
+}
+.badge-cat.cat-berat {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border-color: #fca5a5;
+}
+.badge-cat.cat-akademik {
+    background-color: #dbeafe;
+    color: #1e40af;
+    border-color: #93c5fd;
+}
+.badge-cat.cat-non_akademik {
+    background-color: #d1fae5;
+    color: #065f46;
+    border-color: #6ee7b7;
+}
+.badge-cat.cat-kedisiplinan {
+    background-color: #ccfbf1;
+    color: #115e59;
+    border-color: #5eead4;
+}
+.badge-cat.cat-organisasi {
+    background-color: #f3e8ff;
+    color: #6b21a8;
+    border-color: #d8b4fe;
+}
+.badge-cat.cat-sosial {
+    background-color: #ffe4e6;
+    color: #9f1239;
+    border-color: #fda4af;
+}
+.badge-cat.cat-default {
+    background-color: #f1f5f9;
+    color: #334155;
+    border-color: #cbd5e1;
+}
+
