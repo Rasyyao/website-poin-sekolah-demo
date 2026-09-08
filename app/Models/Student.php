@@ -64,11 +64,12 @@ class Student extends Model
     // ── Computed Attributes ─────────────────────────────────
 
     /**
-     * Get total accumulated net points (achievements - violations).
+     * @deprecated Use totalViolationPoints() or totalAchievementPoints() instead.
+     * Kept for backwards compatibility without reducing violation points by achievement points.
      */
     public function totalPoints(): int
     {
-        return $this->totalViolationPoints() - $this->totalAchievementPoints();
+        return $this->totalViolationPoints();
     }
 
     /**

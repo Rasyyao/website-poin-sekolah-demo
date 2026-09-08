@@ -57,6 +57,20 @@ class Rule extends Model
         return $query->where('type', RuleType::Achievement);
     }
 
+    public function scopeOrdered(Builder $query): Builder
+    {
+        return $query
+            ->orderByRaw("CASE WHEN type = 'violation' THEN 1 ELSE 2 END")
+            ->orderByRaw("CASE 
+                WHEN category = 'ringan' THEN 1 
+                WHEN category = 'sedang' THEN 2 
+                WHEN category = 'berat' THEN 3 
+                ELSE 4 
+            END")
+            ->orderBy('points', 'asc')
+            ->orderBy('name', 'asc');
+    }
+
     // ── Helpers ─────────────────────────────────────────────
 
     public function requiresApproval(): bool

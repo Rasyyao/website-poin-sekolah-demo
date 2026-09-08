@@ -25,7 +25,8 @@
             <tr><th>Nama</th><td>: {{ $student->name }}</td></tr>
             <tr><th>NISN</th><td>: {{ $student->nisn }}</td></tr>
             <tr><th>Kelas</th><td>: {{ $student->currentClass->name ?? '-' }}</td></tr>
-            <tr><th>Total Poin</th><td>: {{ $report['summary']['net_points'] ?? 0 }}</td></tr>
+            <tr><th>Poin Pelanggaran</th><td>: {{ $report['summary']['total_violation_points'] ?? 0 }}</td></tr>
+            <tr><th>Poin Prestasi</th><td>: {{ $report['summary']['total_achievement_points'] ?? 0 }}</td></tr>
         </table>
     </div>
 

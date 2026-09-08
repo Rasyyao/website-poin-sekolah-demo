@@ -99,7 +99,6 @@ class ReportService
                 'total_achievements' => $logs->filter(fn($log) => $log->rule->type->value === 'achievement')->count(),
                 'total_violation_points' => $logs->filter(fn($log) => $log->rule->type->value === 'violation')->sum('points'),
                 'total_achievement_points' => $logs->filter(fn($log) => $log->rule->type->value === 'achievement')->sum('points'),
-                'net_points' => $logs->filter(fn($log) => $log->rule->type->value === 'violation')->sum('points') - $logs->filter(fn($log) => $log->rule->type->value === 'achievement')->sum('points'),
             ],
         ];
     }
@@ -161,7 +160,6 @@ class ReportService
                     'nisn' => $s->nisn,
                     'total_violation_points' => $v,
                     'total_achievement_points' => $a,
-                    'net_points' => $v - $a,
                     'action_required' => $actionRequired,
                 ];
             })->sortBy('name')->values(),

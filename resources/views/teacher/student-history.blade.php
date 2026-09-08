@@ -7,7 +7,8 @@
 <div class="mb-4 flex items-center gap-4">
     <span class="text-sm text-gray-400">NISN: {{ $student->nisn }}</span>
     <span class="text-sm text-gray-400">Kelas: {{ $student->currentClass?->name ?? '-' }}</span>
-    <span class="text-sm font-medium {{ $student->totalPoints() > 0 ? 'text-red-400' : ($student->totalPoints() < 0 ? 'text-green-400' : 'text-gray-400') }}">Total: {{ abs($student->totalPoints()) }}</span>
+    <span class="text-sm font-medium text-red-400">Pelanggaran: {{ $student->totalViolationPoints() }}</span>
+    <span class="text-sm font-medium text-green-400">Prestasi: +{{ $student->totalAchievementPoints() }}</span>
 </div>
 
 <div class="bg-surface-light rounded-xl border border-gray-700/50 overflow-x-auto">

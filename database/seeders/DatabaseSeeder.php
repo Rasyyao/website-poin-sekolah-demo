@@ -36,6 +36,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // ── School Staff ────────────────────────────────────
+        User::create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@demo.sch.id',
+            'password' => bcrypt('password'),
+            'role' => UserRole::SuperAdmin,
+            'school_id' => null,
+        ]);
+
         $admin = User::create([
             'name' => 'Admin Sekolah',
             'email' => 'admin@smpn1demo.sch.id',

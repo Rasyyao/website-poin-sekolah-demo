@@ -76,6 +76,8 @@ Route::prefix('admin')
         // Operasional Poin
         Route::get('points-log', [Admin\PointsLogController::class, 'index'])->name('points-log.index');
         Route::get('points-log/{pointsLog}', [Admin\PointsLogController::class, 'show'])->name('points-log.show');
+        Route::put('points-log/{pointsLog}', [Admin\PointsLogController::class, 'update'])->name('points-log.update');
+        Route::delete('points-log/{pointsLog}', [Admin\PointsLogController::class, 'destroy'])->name('points-log.destroy');
         Route::post('points-log/{pointsLog}/approve', [Admin\PointsLogController::class, 'approve'])->name('points-log.approve');
         Route::post('points-log/{pointsLog}/reject', [Admin\PointsLogController::class, 'reject'])->name('points-log.reject');
 
@@ -111,6 +113,8 @@ Route::prefix('teacher')
         Route::middleware('can:input points')->group(function () {
             Route::get('points', [Teacher\PointsController::class, 'index'])->name('points.index');
             Route::post('points', [Teacher\PointsController::class, 'store'])->name('points.store');
+            Route::put('points/{pointsLog}', [Teacher\PointsController::class, 'update'])->name('points.update');
+            Route::delete('points/{pointsLog}', [Teacher\PointsController::class, 'destroy'])->name('points.destroy');
         });
         Route::get('my-students', [Teacher\StudentMonitorController::class, 'myStudents'])->name('my-students');
         Route::get('students/{student}/history', [Teacher\StudentMonitorController::class, 'studentHistory'])->name('students.history');

@@ -22,7 +22,6 @@
             <th class="text-left px-5 py-3 text-xs font-semibold text-gray-400 uppercase">Kelas</th>
             <th class="text-center px-5 py-3 text-xs font-semibold text-gray-400 uppercase">Pelanggaran</th>
             <th class="text-center px-5 py-3 text-xs font-semibold text-gray-400 uppercase">Prestasi</th>
-            <th class="text-center px-5 py-3 text-xs font-semibold text-gray-400 uppercase">Total</th>
             <th class="text-right px-5 py-3 text-xs font-semibold text-gray-400 uppercase">Aksi</th>
         </tr></thead>
         <tbody class="divide-y divide-gray-700/30">
@@ -33,7 +32,6 @@
                     <td class="px-5 py-3 text-sm text-gray-400">{{ $s['class'] }}</td>
                     <td class="px-5 py-3 text-sm text-center text-red-400">{{ $s['violation_points'] }}</td>
                     <td class="px-5 py-3 text-sm text-center text-green-400">+{{ $s['achievement_points'] }}</td>
-                    <td class="px-5 py-3 text-sm text-center font-medium {{ $s['total_points'] > 0 ? 'text-red-400' : ($s['total_points'] < 0 ? 'text-green-400' : 'text-gray-400') }}">{{ abs($s['total_points']) }}</td>
                     <td class="px-5 py-3 text-right">
                         <a href="{{ route('teacher.students.history', $s['id']) }}" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors border border-blue-500/20" title="Riwayat">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -41,7 +39,7 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="7" class="px-5 py-8 text-center text-gray-500">Anda belum ditugaskan sebagai wali kelas.</td></tr>
+                <tr><td colspan="6" class="px-5 py-8 text-center text-gray-500">Anda belum ditugaskan sebagai wali kelas.</td></tr>
             @endforelse
         </tbody>
     </table>

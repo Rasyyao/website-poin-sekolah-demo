@@ -27,7 +27,6 @@ class ClassReportExport implements FromArray, WithHeadings, WithTitle, ShouldAut
                 $student['name'],
                 $student['total_violation_points'],
                 $student['total_achievement_points'],
-                $student['net_points'],
                 $student['action_required'] ?? 'Aman',
             ];
         }
@@ -41,7 +40,6 @@ class ClassReportExport implements FromArray, WithHeadings, WithTitle, ShouldAut
             'Nama Siswa',
             'Poin Pelanggaran',
             'Poin Prestasi',
-            'Total Poin',
             'Keterangan / Tindakan'
         ];
     }

@@ -87,7 +87,7 @@ class ReportController extends Controller
 
         return view('admin.students.show', [
             'student' => $student,
-            'totalPoints' => $report['summary']['net_points'],
+            'totalPoints' => $report['summary']['total_violation_points'],
             'violationPoints' => $report['summary']['total_violation_points'],
             'achievementPoints' => $report['summary']['total_achievement_points'],
             'logs' => $student->pointsLogs()->with(['rule', 'reporter'])->orderByDesc('occurred_at')->paginate(20),

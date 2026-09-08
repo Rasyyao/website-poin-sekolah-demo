@@ -118,31 +118,50 @@ html:not(.dark) .bg-surface-light {
 
 /* TomSelect Light Theme Overrides */
 .ts-control {
-    background-color: var(--color-slate-100) !important;
-    border-color: var(--color-slate-300) !important;
+    background-color: #ffffff !important;
+    border: 1px solid var(--color-slate-200) !important;
     color: var(--color-slate-900) !important;
     border-radius: 0.5rem !important;
     padding: 0.625rem 1rem !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.ts-control.focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
 }
 .ts-control > input {
     color: var(--color-slate-900) !important;
 }
 .ts-dropdown {
-    background-color: var(--color-slate-100) !important;
-    border-color: var(--color-slate-300) !important;
+    background-color: #ffffff !important;
+    border: 1px solid var(--color-slate-200) !important;
     color: var(--color-slate-900) !important;
-    border-radius: 0.5rem !important;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+    border-radius: 0.75rem !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04) !important;
+    overflow: hidden;
 }
 .ts-dropdown .option {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.875rem;
+}
+.ts-dropdown .optgroup-header {
+    font-size: 0.7rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    padding: 0.5rem 0.875rem 0.35rem !important;
+    background-color: #f8fafc !important;
+    color: #64748b !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+.ts-dropdown .optgroup:not(:first-child) {
+    border-top: 1px solid var(--color-slate-200);
 }
 .ts-dropdown .option:hover, .ts-dropdown .option.active {
-    background-color: var(--color-slate-200) !important;
-    color: var(--color-primary-600) !important;
+    background-color: #f1f5f9 !important;
+    color: #2563eb !important;
 }
 .ts-wrapper.single .ts-control::after {
-    border-color: #6b7280 transparent transparent transparent !important;
+    border-color: #94a3b8 transparent transparent transparent !important;
 }
 
 /* SweetAlert Dark Theme Overrides */

@@ -88,7 +88,8 @@
                 <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">NISN</th>
                 <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Nama</th>
                 <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Kelas</th>
-                <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Total Poin</th>
+                <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Pelanggaran</th>
+                <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">Prestasi</th>
                 <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Aksi</th>
             </tr>
         </thead>
@@ -99,10 +100,16 @@
                     <td class="px-6 py-4 text-sm text-slate-900 font-medium group-hover:text-blue-600 transition-colors">{{ $student->name }}</td>
                     <td class="px-6 py-4 text-sm text-slate-500">{{ $student->currentClass?->name ?? '-' }}</td>
                     <td class="px-6 py-4 text-sm text-center">
-                        @php $tp = $student->totalPoints(); @endphp
-                        <div class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-slate-100 text-sm font-bold border {{ $tp > 0 ? 'border-red-500/20 text-red-400' : ($tp < 0 ? 'border-green-500/20 text-green-400' : 'border-slate-200 text-slate-500') }}">
-                            {{ abs($tp) }}
-                        </div>
+                        @php $vp = $student->totalViolationPoints(); @endphp
+                        <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold {{ $vp > 0 ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-slate-50 text-slate-400 border border-slate-200' }}">
+                            {{ $vp }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-center">
+                        @php $ap = $student->totalAchievementPoints(); @endphp
+                        <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold {{ $ap > 0 ? 'bg-green-50 text-green-600 border border-green-200' : 'bg-slate-50 text-slate-400 border border-slate-200' }}">
+                            {{ $ap > 0 ? '+' : '' }}{{ $ap }}
+                        </span>
                     </td>
                     <td class="px-6 py-4 text-sm text-right">
                         <div class="flex items-center justify-end gap-2">
@@ -186,7 +193,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="px-6 py-12 text-center">
+                    <td colspan="6" class="px-6 py-12 text-center">
                         <div class="flex flex-col items-center justify-center text-slate-400">
                             <svg class="w-12 h-12 mb-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                             <p class="text-base font-medium">Belum ada data siswa.</p>

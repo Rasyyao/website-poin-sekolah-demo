@@ -16,7 +16,7 @@ test('admin can create a violation rule', function () {
         'name' => 'Test Rule',
         'type' => 'violation',
         'category' => 'ringan',
-        'points' => '-10',
+        'points' => '10',
         'is_active' => '1',
     ])->assertRedirect('/admin/rules')->assertSessionHas('success');
     

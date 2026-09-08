@@ -21,7 +21,7 @@
     </div>
 </form>
 
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 text-center">
         <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Pelanggaran</p>
         <p class="text-3xl font-black text-red-500 mt-2">{{ $report['summary']['total_violation_points'] ?? 0 }}</p>
@@ -31,11 +31,6 @@
         <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Prestasi</p>
         <p class="text-3xl font-black text-green-500 mt-2">+{{ $report['summary']['total_achievement_points'] ?? 0 }}</p>
         <p class="text-xs text-slate-400 mt-1">{{ $report['summary']['total_achievements'] ?? 0 }} kejadian</p>
-    </div>
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 text-center">
-        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Poin Bersih</p>
-        @php $net = $report['summary']['net_points'] ?? 0; @endphp
-        <p class="text-3xl font-black mt-2 {{ $net > 0 ? 'text-red-500' : ($net < 0 ? 'text-green-500' : 'text-slate-800') }}">{{ abs($net) }}</p>
     </div>
 </div>
 

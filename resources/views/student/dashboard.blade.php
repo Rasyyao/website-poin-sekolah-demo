@@ -12,18 +12,16 @@
 @section('content')
 <div x-data="{ showAppealModal: false, appealLogId: null, appealRuleName: '' }" @open-appeal.window="showAppealModal = true; appealLogId = $event.detail.id; appealRuleName = $event.detail.name">
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 text-center">
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Poin</p>
-            <p class="text-3xl font-black mt-2 {{ $stats['total_points'] > 0 ? 'text-red-500' : ($stats['total_points'] < 0 ? 'text-green-500' : 'text-slate-800') }}">{{ abs($stats['total_points']) }}</p>
-        </div>
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 text-center">
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Pelanggaran</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Poin Pelanggaran</p>
             <p class="text-3xl font-black text-red-500 mt-2">{{ $stats['total_violation_points'] }}</p>
+            <p class="text-xs text-slate-400 mt-1">Akumulasi poin pelanggaran tata tertib</p>
         </div>
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 text-center">
-            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Prestasi</p>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Poin Prestasi</p>
             <p class="text-3xl font-black text-green-500 mt-2">+{{ $stats['total_achievement_points'] }}</p>
+            <p class="text-xs text-slate-400 mt-1">Akumulasi poin pencapaian & prestasi</p>
         </div>
     </div>
 

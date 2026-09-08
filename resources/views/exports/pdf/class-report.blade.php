@@ -37,7 +37,6 @@
                 <th>Nama Siswa</th>
                 <th>Pelanggaran</th>
                 <th>Prestasi</th>
-                <th>Total Poin (Net)</th>
                 <th>Keterangan / Tindakan</th>
             </tr>
         </thead>
@@ -48,7 +47,6 @@
                     <td>{{ $student['name'] }}</td>
                     <td>{{ $student['total_violation_points'] }}</td>
                     <td>{{ $student['total_achievement_points'] }}</td>
-                    <td>{{ $student['net_points'] }}</td>
                     <td style="color: {{ $student['action_required'] ? '#dc2626' : '#16a34a' }}; font-weight: bold;">
                         {{ $student['action_required'] ?? 'Aman' }}
                     </td>

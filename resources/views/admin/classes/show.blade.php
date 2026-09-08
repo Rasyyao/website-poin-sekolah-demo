@@ -52,7 +52,8 @@
             <thead><tr class="bg-surface-lighter/50">
                 <th class="px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">NISN</th>
                 <th class="px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Nama</th>
-                <th class="px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider text-center">Total Poin</th>
+                <th class="px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider text-center">Pelanggaran</th>
+                <th class="px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider text-center">Prestasi</th>
             </tr></thead>
             <tbody class="divide-y divide-gray-700/30">
                 @forelse($class->students as $student)
@@ -60,15 +61,21 @@
                         <td class="px-6 py-4 text-sm text-gray-300 font-mono">{{ $student->nisn }}</td>
                         <td class="px-6 py-4 text-sm text-gray-200"><a href="{{ route('admin.students.show', $student) }}" class="group-hover:text-primary-400 transition-colors">{{ $student->name }}</a></td>
                         <td class="px-6 py-4 text-sm text-center">
-                            @php $tp = $student->totalPoints(); @endphp
-                            <div class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-surface text-sm font-bold border {{ $tp > 0 ? 'border-red-500/20 text-red-400' : ($tp < 0 ? 'border-green-500/20 text-green-400' : 'border-gray-600/50 text-gray-400') }}">
-                                {{ abs($tp) }}
-                            </div>
+                            @php $vp = $student->totalViolationPoints(); @endphp
+                            <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold {{ $vp > 0 ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-surface text-gray-400 border border-gray-600/50' }}">
+                                {{ $vp }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-center">
+                            @php $ap = $student->totalAchievementPoints(); @endphp
+                            <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold {{ $ap > 0 ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-surface text-gray-400 border border-gray-600/50' }}">
+                                {{ $ap > 0 ? '+' : '' }}{{ $ap }}
+                            </span>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3" class="px-6 py-12 text-center">
+                        <td colspan="4" class="px-6 py-12 text-center">
                             <div class="flex flex-col items-center justify-center text-gray-500">
                                 <svg class="w-12 h-12 mb-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                                 <p class="text-base font-medium">Tidak ada siswa di kelas ini.</p>

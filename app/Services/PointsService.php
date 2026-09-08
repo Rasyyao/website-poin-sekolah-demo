@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\PointsLogStatus;
+use App\Enums\RuleType;
 use App\Models\PointsLog;
 use App\Models\Rule;
 use App\Models\Student;
@@ -47,7 +48,7 @@ class PointsService
             ]);
 
             // Only check thresholds for auto-approved entries
-            if ($status === PointsLogStatus::Approved && $rule->points < 0) {
+            if ($status === PointsLogStatus::Approved && $rule->type === RuleType::Violation) {
                 $this->thresholdEngine->evaluate($student);
             }
 
@@ -62,7 +63,7 @@ class PointsService
     {
         $pointsLog->approve();
 
-        if ($pointsLog->points < 0) {
+        if ($pointsLog->rule->type === RuleType::Violation) {
             $this->thresholdEngine->evaluate($pointsLog->student);
         }
     }
@@ -80,8 +81,29 @@ class PointsService
      */
     public function correctPoints(PointsLog $pointsLog, array $data): PointsLog
     {
+        if (isset($data['rule_id']) && ! isset($data['points'])) {
+            $rule = Rule::find($data['rule_id']);
+            if ($rule) {
+                $data['points'] = $rule->points;
+            }
+        }
+
         $pointsLog->update($data);
 
         return $pointsLog->fresh();
+    }
+
+    /**
+     * Delete a points log entry.
+     */
+    public function deletePoints(PointsLog $pointsLog): void
+    {
+        DB::transaction(function () use ($pointsLog) {
+            if ($pointsLog->evidence_url && str_starts_with($pointsLog->evidence_url, '/storage/')) {
+                $relativePath = str_replace('/storage/', '', $pointsLog->evidence_url);
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($relativePath);
+            }
+            $pointsLog->delete();
+        });
     }
 }

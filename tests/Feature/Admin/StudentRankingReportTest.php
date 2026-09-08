@@ -74,7 +74,7 @@ class StudentRankingReportTest extends TestCase
         RuleThreshold::create([
             'school_id' => $school->id,
             'min_points' => 50,
-            'action' => 'Panggilan Orang Tua',
+            'action' => 'Notifikasi Orang Tua',
             'description' => 'Notifikasi ke ortu',
         ]);
 
@@ -82,7 +82,7 @@ class StudentRankingReportTest extends TestCase
             'school_id' => $school->id,
             'name' => 'Terlambat',
             'type' => RuleType::Violation,
-            'points' => -20,
+            'points' => 20,
             'is_active' => true,
         ]);
 
@@ -92,7 +92,7 @@ class StudentRankingReportTest extends TestCase
             'student_id' => $student1->id,
             'rule_id' => $rule->id,
             'reported_by' => $teacher->id,
-            'points' => -20,
+            'points' => 20,
             'status' => PointsLogStatus::Approved,
             'occurred_at' => now(),
         ]);
@@ -101,7 +101,7 @@ class StudentRankingReportTest extends TestCase
             'student_id' => $student1->id,
             'rule_id' => $rule->id,
             'reported_by' => $teacher->id,
-            'points' => -40,
+            'points' => 40,
             'status' => PointsLogStatus::Approved,
             'occurred_at' => now(),
         ]);
@@ -112,7 +112,7 @@ class StudentRankingReportTest extends TestCase
             'student_id' => $student2->id,
             'rule_id' => $rule->id,
             'reported_by' => $teacher->id,
-            'points' => -20,
+            'points' => 20,
             'status' => PointsLogStatus::Approved,
             'occurred_at' => now(),
         ]);
