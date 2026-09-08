@@ -64,15 +64,15 @@
                 </button>
             </div>
 
-            <form method="POST" action="{{ route('parent.logout') }}" class="m-0">
+            <form method="POST" action="{{ route('parent.logout') }}" class="m-0 hidden md:block">
                 @csrf
                 <button type="submit" title="Logout" class="inline-flex items-center justify-center gap-2 text-sm font-medium px-3 py-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white border border-red-200 hover:border-red-600 transition-all duration-200 cursor-pointer shadow-sm">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                    <span class="hidden sm:inline">Logout</span>
+                    <span>Logout</span>
                 </button>
             </form>
 
-            <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="md:hidden p-1.5 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer">
+            <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="md:hidden p-1.5 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer" aria-label="Menu Navigasi">
                 <svg x-show="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 <svg x-show="isMobileMenuOpen" style="display: none;" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
@@ -96,6 +96,16 @@
                         {{ $item['name'] }}
                     </a>
                 @endforeach
+
+                <div class="pt-2 border-t border-slate-100 mt-2">
+                    <form method="POST" action="{{ route('parent.logout') }}" class="m-0">
+                        @csrf
+                        <button type="submit" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors cursor-pointer">
+                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                            <span>Keluar / Logout</span>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </header>

@@ -34,7 +34,7 @@ class LoginController extends Controller
         // Redirect based on role
         return match ($user->role->value) {
             'super_admin' => redirect()->route('super-admin.schools.index'),
-            'admin' => redirect()->route('admin.reports.dashboard'),
+            'admin', 'kesiswaan' => redirect()->route('admin.reports.dashboard'),
             default => redirect()->route('teacher.points.index'),
         };
     }

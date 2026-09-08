@@ -14,6 +14,7 @@ class Appeal extends Model
         'submitter_type',
         'submitter_id',
         'reason',
+        'evidence_url',
         'status',
         'resolved_by',
         'resolved_at',

@@ -66,6 +66,16 @@ class User extends Authenticatable
         return $this->role === UserRole::Admin;
     }
 
+    public function isKesiswaan(): bool
+    {
+        return $this->role === UserRole::Kesiswaan;
+    }
+
+    public function canManageSettings(): bool
+    {
+        return in_array($this->role, [UserRole::SuperAdmin, UserRole::Admin]);
+    }
+
     public function isTeacher(): bool
     {
         return $this->role === UserRole::Teacher;

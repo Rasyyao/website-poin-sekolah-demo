@@ -1,10 +1,10 @@
 @extends('layouts.app')
 @section('title', 'Dashboard')
+@section('page-desc', 'Ringkasan statistik poin, prestasi, dan pelanggaran kedisiplinan siswa.')
 
-@section('content')
-<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-    <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
-    
+
+@section('page-header', 'Dashboard')
+@section('page-actions')
     <div class="flex items-center gap-3">
         <div class="flex items-center bg-white border border-slate-200 rounded-lg shadow-sm">
             <div class="flex items-center gap-2 px-3 py-2 border-r border-slate-200 text-sm font-medium text-slate-700">
@@ -28,8 +28,9 @@
             Export
         </a>
     </div>
-</div>
+@endsection
 
+@section('content')
 {{-- Stats Cards --}}
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between min-h-[140px]">

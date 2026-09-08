@@ -24,6 +24,12 @@ class DemoLoginController extends Controller
                 $request->session()->regenerate();
                 return redirect()->route('admin.reports.dashboard');
 
+            case 'kesiswaan':
+                $user = User::where('email', 'kesiswaan@smpn1demo.sch.id')->firstOrFail();
+                Auth::login($user);
+                $request->session()->regenerate();
+                return redirect()->route('admin.reports.dashboard');
+
             case 'teacher':
                 $user = User::where('email', 'siti@smpn1demo.sch.id')->firstOrFail();
                 Auth::login($user);

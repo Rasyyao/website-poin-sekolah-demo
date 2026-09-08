@@ -95,8 +95,13 @@ class ReportController extends Controller
 
     public function exportStudentPdf(Request $request, Student $student)
     {
+        $student->load(['currentClass.homeroomTeacher', 'school']);
         $report = $this->reportService->studentBehaviorReport($student, $request->from, $request->to);
-        $logs = $student->pointsLogs()->with(['rule', 'reporter'])->orderByDesc('occurred_at')->get();
+        $logs = $student->pointsLogs()
+            ->with(['rule', 'reporter'])
+            ->where('status', 'approved')
+            ->orderByDesc('occurred_at')
+            ->get();
 
         $pdf = Pdf::loadView('exports.pdf.student-report', [
             'student' => $student,
@@ -104,18 +109,20 @@ class ReportController extends Controller
             'logs' => $logs
         ]);
 
+        $pdf->setPaper('a4', 'portrait');
+
         return $pdf->download('laporan-siswa-' . $student->nisn . '.pdf');
     }
 
     public function exportStudentExcel(Request $request, Student $student)
     {
-        $logs = $student->pointsLogs()->with(['rule', 'reporter'])->orderByDesc('occurred_at')->get();
-        return Excel::download(new StudentReportExport($student, $logs), 'laporan-siswa-' . $student->nisn . '.xlsx');
+        $export = new \App\Exports\StudentReportMultiSheetExport($student);
+        return $export->download('laporan-siswa-' . $student->nisn . '.xlsx');
     }
 
     public function exportClassPdf(Request $request, int $classId)
     {
-        $schoolClass = SchoolClass::findOrFail($classId);
+        $schoolClass = SchoolClass::with(['homeroomTeacher', 'academicYear', 'school'])->findOrFail($classId);
         $schoolId = $request->user()->school_id ?? $schoolClass->school_id;
         $stats = $this->reportService->classStats($schoolId, $classId);
 
@@ -124,15 +131,18 @@ class ReportController extends Controller
             'schoolClass' => $schoolClass
         ]);
 
+        $pdf->setPaper('a4', 'landscape');
+
         return $pdf->download('laporan-kelas-' . $schoolClass->name . '.pdf');
     }
 
     public function exportClassExcel(Request $request, int $classId)
     {
-        $schoolClass = SchoolClass::findOrFail($classId);
+        $schoolClass = SchoolClass::with(['homeroomTeacher', 'academicYear'])->findOrFail($classId);
         $schoolId = $request->user()->school_id ?? $schoolClass->school_id;
         $stats = $this->reportService->classStats($schoolId, $classId);
 
-        return Excel::download(new ClassReportExport($stats, $schoolClass->name), 'laporan-kelas-' . $schoolClass->name . '.xlsx');
+        $export = new \App\Exports\ClassReportMultiSheetExport($schoolClass, $stats);
+        return $export->download('laporan-kelas-' . $schoolClass->name . '.xlsx');
     }
 }

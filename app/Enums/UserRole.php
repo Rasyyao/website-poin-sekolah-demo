@@ -6,6 +6,7 @@ enum UserRole: string
 {
     case SuperAdmin = 'super_admin';
     case Admin = 'admin';
+    case Kesiswaan = 'kesiswaan';
     case Teacher = 'teacher';
     case Homeroom = 'homeroom';
     case Counselor = 'counselor'; // BK
@@ -15,6 +16,7 @@ enum UserRole: string
         return match ($this) {
             self::SuperAdmin => 'Super Admin',
             self::Admin => 'Admin Sekolah',
+            self::Kesiswaan => 'Kesiswaan',
             self::Teacher => 'Guru',
             self::Homeroom => 'Wali Kelas',
             self::Counselor => 'Guru BK',
@@ -28,6 +30,7 @@ enum UserRole: string
     {
         return [
             self::Admin,
+            self::Kesiswaan,
             self::Teacher,
             self::Homeroom,
             self::Counselor,
@@ -41,6 +44,7 @@ enum UserRole: string
     {
         return [
             self::Admin,
+            self::Kesiswaan,
             self::Teacher,
             self::Homeroom,
             self::Counselor,

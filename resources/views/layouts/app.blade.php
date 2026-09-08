@@ -142,7 +142,8 @@
                 </div>
                 
                 <div class="flex items-center gap-2 lg:gap-4">
-                    <div class="hidden lg:flex items-center gap-3">
+                    {{-- Theme Toggle (visible on all screen sizes) --}}
+                    <div class="flex items-center">
                         <div x-data="{ 
                                 theme: localStorage.theme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
                                 toggleTheme() {
@@ -161,23 +162,18 @@
                                 <svg x-show="theme === 'light'" style="display: none;" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
                             </button>
                         </div>
-                        <button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors relative">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-                        </button>
                     </div>
 
-                    {{-- User Profile --}}
-                    <div class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold border border-blue-200 shadow-sm">
-                        {{ strtoupper(substr(auth()->user()->name ?? 'G', 0, 1)) }}
+                    {{-- User Name + Avatar --}}
+                    <div class="flex items-center gap-2">
+                        <div class="hidden lg:block text-right">
+                            <p class="text-sm font-semibold text-slate-800 truncate max-w-[140px] leading-tight">{{ auth()->user()->name }}</p>
+                            <p class="text-xs text-slate-400 truncate capitalize leading-tight">{{ str_replace('_', ' ', auth()->user()->role?->value ?? '-') }}</p>
+                        </div>
+                        <div class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold border border-blue-200 shadow-sm text-sm">
+                            {{ strtoupper(substr(auth()->user()->name ?? 'G', 0, 1)) }}
+                        </div>
                     </div>
-
-                    {{-- Desktop Logout Button --}}
-                    <form method="POST" action="{{ route('logout') }}" class="m-0 hidden lg:block ml-2">
-                        @csrf
-                        <button type="submit" title="Logout" class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                        </button>
-                    </form>
                 </div>
 
                 {{-- Mobile Navigation Dropdown --}}

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreAppealRequest;
 use App\Models\Appeal;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AppealController extends Controller
 {
@@ -35,11 +36,18 @@ class AppealController extends Controller
             return back()->with('error', 'Sudah ada banding yang sedang diproses untuk poin ini.');
         }
 
+        $evidenceUrl = null;
+        if ($request->hasFile('evidence')) {
+            $path = $request->file('evidence')->store('evidence', 'public');
+            $evidenceUrl = Storage::url($path);
+        }
+
         Appeal::create([
             'points_log_id' => $request->points_log_id,
             'submitter_type' => Student::class,
             'submitter_id' => $studentId,
             'reason' => $request->reason,
+            'evidence_url' => $evidenceUrl,
             'status' => 'pending',
         ]);
 

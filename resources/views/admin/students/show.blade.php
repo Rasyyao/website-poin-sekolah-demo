@@ -16,7 +16,7 @@
     {{-- Student Profile Card --}}
     <div class="bg-surface-light rounded-2xl border border-gray-700/50 p-6 flex flex-col items-center text-center shadow-lg relative overflow-hidden h-fit">
         <!-- Background accent -->
-        <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-primary-900/30 to-transparent"></div>
+        <!-- <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-primary-900/30 to-transparent"></div> -->
 
         <div class="relative w-28 h-28 rounded-full bg-surface border-4 border-surface-light flex items-center justify-center text-primary-400 text-4xl font-bold mb-4 shadow-xl z-10">
             <div class="absolute inset-0 rounded-full bg-primary-500/10"></div>
@@ -24,7 +24,7 @@
         </div>
         
         <h3 class="text-xl font-bold text-gray-100 mb-1 z-10">{{ $student->name }}</h3>
-        <p class="text-sm font-mono text-primary-400 mb-6 bg-primary-900/20 px-4 py-1.5 rounded-full border border-primary-500/20 z-10">NISN: {{ $student->nisn }}</p>
+        <p class="text-sm font-mono text-primary-400 mb-6 bg-primary-500/20 px-4 py-1.5 rounded-full border border-primary-500/20 z-10">NISN: {{ $student->nisn }}</p>
         
         <div class="w-full space-y-4 text-sm text-left mb-8 bg-surface p-5 rounded-xl border border-gray-700/50 shadow-inner z-10">
             <div class="flex justify-between items-center pb-3 border-b border-gray-700/30">
@@ -44,7 +44,7 @@
             <div class="flex justify-between items-center">
                 <span class="text-gray-400 flex items-center gap-2">
                     <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                    Kontak Ortu
+                    Kontak Orang Tua
                 </span>
                 <span class="text-gray-100 font-medium">{{ $student->parent_contact ?? '-' }}</span>
             </div>
@@ -53,7 +53,7 @@
         <div class="w-full space-y-3 z-10">
             <form method="POST" action="{{ route('admin.students.generate-access-code', $student) }}" class="w-full">
                 @csrf
-                <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-all shadow-lg shadow-primary-500/20 cursor-pointer group">
+                <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-all shadow-lg cursor-pointer group">
                     <svg class="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
                     Generate Kode Akses Orang Tua
                 </button>
@@ -121,7 +121,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm text-gray-400">Poin Prestasi</p>
-                        <p class="text-2xl font-bold text-green-400 mt-1">+{{ $achievementPoints }}</p>
+                        <p class="text-2xl font-bold text-green-400 mt-1">{{ $achievementPoints }}</p>
                         <p class="text-xs text-gray-500 mt-1">Akumulasi pencapaian & prestasi</p>
                     </div>
                     <div class="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center">

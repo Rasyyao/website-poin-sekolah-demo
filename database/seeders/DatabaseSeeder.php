@@ -52,6 +52,14 @@ class DatabaseSeeder extends Seeder
             'school_id' => $school->id,
         ]);
 
+        $kesiswaan = User::create([
+            'name' => 'Ahmad Fauzi (Kesiswaan)',
+            'email' => 'kesiswaan@smpn1demo.sch.id',
+            'password' => bcrypt('password'),
+            'role' => UserRole::Kesiswaan,
+            'school_id' => $school->id,
+        ]);
+
         $guru1 = User::create([
             'name' => 'Budi Santoso',
             'email' => 'budi@smpn1demo.sch.id',

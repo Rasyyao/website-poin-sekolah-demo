@@ -28,13 +28,14 @@
     {{-- Demo Login Section --}}
     <div class="mb-6 p-4 rounded-xl bg-primary-500/10 border border-primary-500/20">
         <h3 class="text-sm font-semibold text-primary-400 mb-3 text-center">Coba Versi Demo (Satu Klik)</h3>
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <a href="{{ route('demo.login', 'admin') }}" class="px-3 py-2 text-xs font-medium text-center text-gray-300 bg-surface rounded-lg hover:bg-primary-600 hover:text-white transition-colors border border-gray-600">Admin</a>
+            <a href="{{ route('demo.login', 'kesiswaan') }}" class="px-3 py-2 text-xs font-medium text-center text-gray-300 bg-surface rounded-lg hover:bg-primary-600 hover:text-white transition-colors border border-gray-600">Kesiswaan</a>
             <a href="{{ route('demo.login', 'teacher') }}" class="px-3 py-2 text-xs font-medium text-center text-gray-300 bg-surface rounded-lg hover:bg-primary-600 hover:text-white transition-colors border border-gray-600">Guru</a>
             <a href="{{ route('demo.login', 'homeroom') }}" class="px-3 py-2 text-xs font-medium text-center text-gray-300 bg-surface rounded-lg hover:bg-primary-600 hover:text-white transition-colors border border-gray-600">Wali Kelas</a>
             <a href="{{ route('demo.login', 'counselor') }}" class="px-3 py-2 text-xs font-medium text-center text-gray-300 bg-surface rounded-lg hover:bg-primary-600 hover:text-white transition-colors border border-gray-600">Guru BK</a>
             <a href="{{ route('demo.login', 'student') }}" class="px-3 py-2 text-xs font-medium text-center text-gray-300 bg-surface rounded-lg hover:bg-primary-600 hover:text-white transition-colors border border-gray-600">Siswa</a>
-            <a href="{{ route('demo.login', 'parent') }}" class="px-3 py-2 text-xs font-medium text-center text-gray-300 bg-surface rounded-lg hover:bg-primary-600 hover:text-white transition-colors border border-gray-600">Orang Tua</a>
+            <a href="{{ route('demo.login', 'parent') }}" class="col-span-2 sm:col-span-3 px-3 py-2 text-xs font-medium text-center text-gray-300 bg-surface rounded-lg hover:bg-primary-600 hover:text-white transition-colors border border-gray-600">Orang Tua</a>
         </div>
     </div>
     <div class="flex items-center gap-4 mb-6">

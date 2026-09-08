@@ -1,10 +1,28 @@
 <?php
 
-use App\Http\Controllers\Admin;
-use App\Http\Controllers\Auth;
-use App\Http\Controllers\ParentAccess;
-use App\Http\Controllers\Student;
-use App\Http\Controllers\Teacher;
+use App\Http\Controllers\Admin\AcademicYearController;
+use App\Http\Controllers\Admin\AppealController as AdminAppealController;
+use App\Http\Controllers\Admin\ClassController;
+use App\Http\Controllers\Admin\ExportController;
+use App\Http\Controllers\Admin\PointsLogController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
+use App\Http\Controllers\Admin\RuleController;
+use App\Http\Controllers\Admin\RuleThresholdController;
+use App\Http\Controllers\Admin\SchoolController;
+use App\Http\Controllers\Admin\SchoolSettingController;
+use App\Http\Controllers\Admin\StaffController;
+use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\StudentImportController;
+use App\Http\Controllers\Auth\DemoLoginController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ParentAccessController;
+use App\Http\Controllers\ParentAccess\DashboardController as ParentDashboardController;
+use App\Http\Controllers\ParentAccess\ReportController as ParentReportController;
+use App\Http\Controllers\Student\AppealController as StudentAppealController;
+use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
+use App\Http\Controllers\Student\RuleListController;
+use App\Http\Controllers\Teacher\PointsController;
+use App\Http\Controllers\Teacher\StudentMonitorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,17 +38,17 @@ Route::get('/', function () {
 // ── Authentication ──────────────────────────────────────────────────────
 
 Route::prefix('auth')->group(function () {
-    Route::get('login', [Auth\LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('login', [Auth\LoginController::class, 'login'])->name('login.submit');
-    Route::post('logout', [Auth\LoginController::class, 'logout'])->name('logout');
+    Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [LoginController::class, 'login'])->name('login.submit');
+    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
     // Parent access (via student NISN + access code)
-    Route::get('parent/login', [Auth\ParentAccessController::class, 'showLoginForm'])->name('parent.login.form');
-    Route::post('parent/login', [Auth\ParentAccessController::class, 'login'])->name('parent.login');
-    Route::post('parent/logout', [Auth\ParentAccessController::class, 'logout'])->name('parent.logout');
+    Route::get('parent/login', [ParentAccessController::class, 'showLoginForm'])->name('parent.login.form');
+    Route::post('parent/login', [ParentAccessController::class, 'login'])->name('parent.login');
+    Route::post('parent/logout', [ParentAccessController::class, 'logout'])->name('parent.logout');
 
     // Demo One-Click Login
-    Route::get('demo-login/{role}', [Auth\DemoLoginController::class, 'login'])->name('demo.login');
+    Route::get('demo-login/{role}', [DemoLoginController::class, 'login'])->name('demo.login');
 });
 
 // ── Super Admin Routes ──────────────────────────────────────────────────
@@ -39,86 +57,87 @@ Route::prefix('super-admin')
     ->middleware(['auth', 'role:super_admin'])
     ->name('super-admin.')
     ->group(function () {
-        Route::resource('schools', Admin\SchoolController::class);
+        Route::resource('schools', SchoolController::class);
     });
 
-// ── Admin Sekolah Routes ────────────────────────────────────────────────
+// ── Admin Sekolah & Kesiswaan & Guru Shared Routes ──────────────────────
 
 Route::prefix('admin')
-    ->middleware(['auth', 'role:super_admin,admin', 'school.active'])
     ->name('admin.')
+    ->middleware(['auth', 'school.active'])
     ->group(function () {
-        // School Settings
-        Route::put('school/update', [Admin\SchoolSettingController::class, 'update'])->name('school.update');
+        // Settings & Staff Management (Super Admin & Admin Sekolah ONLY - Kesiswaan & Guru prohibited)
+        Route::middleware(['role:super_admin,admin'])->group(function () {
+            Route::put('school/update', [SchoolSettingController::class, 'update'])->name('school.update');
+            Route::resource('staff', StaffController::class)->except(['show', 'create']);
+            Route::resource('academic-years', AcademicYearController::class);
+            Route::post('academic-years/{academicYear}/activate', [AcademicYearController::class, 'activate'])->name('academic-years.activate');
+            Route::resource('rule-thresholds', RuleThresholdController::class)->except(['show']);
+            Route::get('exports/staff/{format}', [ExportController::class, 'staff'])->name('exports.staff');
+            Route::get('exports/thresholds/{format}', [ExportController::class, 'thresholds'])->name('exports.thresholds');
+        });
 
-        // Staff Management
-        Route::resource('staff', Admin\StaffController::class)->except(['show', 'create']);
+        // Master Data & Operasional Poin (Super Admin, Admin Sekolah, & Kesiswaan)
+        Route::middleware(['role:super_admin,admin,kesiswaan'])->group(function () {
+            Route::resource('classes', ClassController::class);
+            Route::get('students/import/template', [StudentImportController::class, 'template'])->name('students.import.template');
+            Route::post('students/import/parse', [StudentImportController::class, 'parse'])->name('students.import.parse');
+            Route::post('students/import/process', [StudentImportController::class, 'process'])->name('students.import.process');
+            Route::get('students/migration', [StudentController::class, 'migration'])->name('students.migration');
+            Route::post('students/bulk-migrate', [StudentController::class, 'bulkMigrate'])->name('students.bulk-migrate');
+            Route::resource('students', StudentController::class);
+            Route::post('students/{student}/generate-access-code', [StudentController::class, 'generateAccessCode'])->name('students.generate-access-code');
 
-        // Master Data
-        Route::resource('academic-years', Admin\AcademicYearController::class);
-        Route::post('academic-years/{academicYear}/activate', [Admin\AcademicYearController::class, 'activate'])->name('academic-years.activate');
+            Route::resource('rules', RuleController::class);
+            Route::post('rules/{rule}/toggle-active', [RuleController::class, 'toggleActive'])->name('rules.toggle-active');
 
-        Route::resource('classes', Admin\ClassController::class);
+            // Operasional Poin
+            Route::get('points-log', [PointsLogController::class, 'index'])->name('points-log.index');
+            Route::get('points-log/{pointsLog}', [PointsLogController::class, 'show'])->name('points-log.show');
+            Route::put('points-log/{pointsLog}', [PointsLogController::class, 'update'])->name('points-log.update');
+            Route::delete('points-log/{pointsLog}', [PointsLogController::class, 'destroy'])->name('points-log.destroy');
+            Route::post('points-log/{pointsLog}/approve', [PointsLogController::class, 'approve'])->name('points-log.approve');
+            Route::post('points-log/{pointsLog}/reject', [PointsLogController::class, 'reject'])->name('points-log.reject');
 
-        Route::get('students/import/template', [Admin\StudentImportController::class, 'template'])->name('students.import.template');
-        Route::post('students/import/parse', [Admin\StudentImportController::class, 'parse'])->name('students.import.parse');
-        Route::post('students/import/process', [Admin\StudentImportController::class, 'process'])->name('students.import.process');
-        Route::get('students/migration', [Admin\StudentController::class, 'migration'])->name('students.migration');
-        Route::post('students/bulk-migrate', [Admin\StudentController::class, 'bulkMigrate'])->name('students.bulk-migrate');
-        Route::resource('students', Admin\StudentController::class);
-        Route::post('students/{student}/generate-access-code', [Admin\StudentController::class, 'generateAccessCode'])->name('students.generate-access-code');
+            Route::get('exports/classes/{format}', [ExportController::class, 'classes'])->name('exports.classes');
+            Route::get('exports/students/{format}', [ExportController::class, 'students'])->name('exports.students');
+        });
 
-        Route::resource('rules', Admin\RuleController::class);
-        Route::post('rules/{rule}/toggle-active', [Admin\RuleController::class, 'toggleActive'])->name('rules.toggle-active');
+        // Appeals (Banding) & Rekap Laporan - Accessible to Admin, Kesiswaan, and Guru (scoped to reporter in Controller)
+        Route::middleware(['role:super_admin,admin,kesiswaan,teacher,homeroom,counselor'])->group(function () {
+            Route::get('appeals', [AdminAppealController::class, 'index'])->name('appeals.index');
+            Route::get('appeals/{appeal}', [AdminAppealController::class, 'show'])->name('appeals.show');
+            Route::post('appeals/{appeal}/accept', [AdminAppealController::class, 'accept'])->name('appeals.accept');
+            Route::post('appeals/{appeal}/reject', [AdminAppealController::class, 'reject'])->name('appeals.reject');
 
-        Route::resource('rule-thresholds', Admin\RuleThresholdController::class)->except(['show']);
-
-        // Operasional Poin
-        Route::get('points-log', [Admin\PointsLogController::class, 'index'])->name('points-log.index');
-        Route::get('points-log/{pointsLog}', [Admin\PointsLogController::class, 'show'])->name('points-log.show');
-        Route::put('points-log/{pointsLog}', [Admin\PointsLogController::class, 'update'])->name('points-log.update');
-        Route::delete('points-log/{pointsLog}', [Admin\PointsLogController::class, 'destroy'])->name('points-log.destroy');
-        Route::post('points-log/{pointsLog}/approve', [Admin\PointsLogController::class, 'approve'])->name('points-log.approve');
-        Route::post('points-log/{pointsLog}/reject', [Admin\PointsLogController::class, 'reject'])->name('points-log.reject');
-
-        // Appeals
-        Route::get('appeals', [Admin\AppealController::class, 'index'])->name('appeals.index');
-        Route::get('appeals/{appeal}', [Admin\AppealController::class, 'show'])->name('appeals.show');
-        Route::post('appeals/{appeal}/accept', [Admin\AppealController::class, 'accept'])->name('appeals.accept');
-        Route::post('appeals/{appeal}/reject', [Admin\AppealController::class, 'reject'])->name('appeals.reject');
-
-        // Reports & Dashboard
-        Route::get('reports/dashboard', [Admin\ReportController::class, 'dashboard'])->name('reports.dashboard');
-        Route::get('reports/dashboard/export', [Admin\ReportController::class, 'exportDashboard'])->name('reports.dashboard.export');
-        Route::get('reports/ranking', [Admin\ReportController::class, 'ranking'])->name('reports.ranking');
-        Route::get('reports/student/{student}', [Admin\ReportController::class, 'studentReport'])->name('reports.student');
-        Route::get('reports/student/{student}/export/pdf', [Admin\ReportController::class, 'exportStudentPdf'])->name('reports.student.export.pdf');
-        Route::get('reports/student/{student}/export/excel', [Admin\ReportController::class, 'exportStudentExcel'])->name('reports.student.export.excel');
-        Route::get('reports/class/{classId}', [Admin\ReportController::class, 'classStats'])->name('reports.class');
-        Route::get('reports/class/{classId}/export/pdf', [Admin\ReportController::class, 'exportClassPdf'])->name('reports.class.export.pdf');
-        Route::get('reports/class/{classId}/export/excel', [Admin\ReportController::class, 'exportClassExcel'])->name('reports.class.export.excel');
-        // Export Routes
-        Route::get('exports/classes/{format}', [Admin\ExportController::class, 'classes'])->name('exports.classes');
-        Route::get('exports/staff/{format}', [Admin\ExportController::class, 'staff'])->name('exports.staff');
-        Route::get('exports/students/{format}', [Admin\ExportController::class, 'students'])->name('exports.students');
-        Route::get('exports/thresholds/{format}', [Admin\ExportController::class, 'thresholds'])->name('exports.thresholds');
+            // Reports & Dashboard & Rekap
+            Route::get('reports/dashboard', [AdminReportController::class, 'dashboard'])->name('reports.dashboard');
+            Route::get('reports/dashboard/export', [AdminReportController::class, 'exportDashboard'])->name('reports.dashboard.export');
+            Route::get('reports/ranking', [AdminReportController::class, 'ranking'])->name('reports.ranking');
+            Route::get('reports/student/{student}', [AdminReportController::class, 'studentReport'])->name('reports.student');
+            Route::get('reports/student/{student}/export/pdf', [AdminReportController::class, 'exportStudentPdf'])->name('reports.student.export.pdf');
+            Route::get('reports/student/{student}/export/excel', [AdminReportController::class, 'exportStudentExcel'])->name('reports.student.export.excel');
+            Route::get('reports/class/{classId}', [AdminReportController::class, 'classStats'])->name('reports.class');
+            Route::get('reports/class/{classId}/export/pdf', [AdminReportController::class, 'exportClassPdf'])->name('reports.class.export.pdf');
+            Route::get('reports/class/{classId}/export/excel', [AdminReportController::class, 'exportClassExcel'])->name('reports.class.export.excel');
+        });
     });
 
-// ── Guru / Wali Kelas / BK Routes ──────────────────────────────────────
+// ── Guru / Wali Kelas / BK / Kesiswaan Routes ──────────────────────────
 
 Route::prefix('teacher')
-    ->middleware(['auth', 'role:admin,teacher,homeroom,counselor', 'school.active'])
+    ->middleware(['auth', 'role:admin,kesiswaan,teacher,homeroom,counselor', 'school.active'])
     ->name('teacher.')
     ->group(function () {
         Route::middleware('can:input points')->group(function () {
-            Route::get('points', [Teacher\PointsController::class, 'index'])->name('points.index');
-            Route::post('points', [Teacher\PointsController::class, 'store'])->name('points.store');
-            Route::put('points/{pointsLog}', [Teacher\PointsController::class, 'update'])->name('points.update');
-            Route::delete('points/{pointsLog}', [Teacher\PointsController::class, 'destroy'])->name('points.destroy');
+            Route::get('points', [PointsController::class, 'index'])->name('points.index');
+            Route::post('points', [PointsController::class, 'store'])->name('points.store');
+            Route::put('points/{pointsLog}', [PointsController::class, 'update'])->name('points.update');
+            Route::delete('points/{pointsLog}', [PointsController::class, 'destroy'])->name('points.destroy');
         });
-        Route::get('my-students', [Teacher\StudentMonitorController::class, 'myStudents'])->name('my-students');
-        Route::get('students/{student}/history', [Teacher\StudentMonitorController::class, 'studentHistory'])->name('students.history');
-        Route::get('class/{class}/summary', [Teacher\StudentMonitorController::class, 'classSummary'])->name('class.summary');
+        Route::get('my-students', [StudentMonitorController::class, 'myStudents'])->name('my-students');
+        Route::get('students/{student}/history', [StudentMonitorController::class, 'studentHistory'])->name('students.history');
+        Route::get('class/{class}/summary', [StudentMonitorController::class, 'classSummary'])->name('class.summary');
     });
 
 // ── Siswa Routes ────────────────────────────────────────────────────────
@@ -126,11 +145,11 @@ Route::prefix('teacher')
 Route::prefix('student')
     ->name('student.')
     ->group(function () {
-        Route::get('dashboard', [Student\DashboardController::class, 'index'])->name('dashboard');
-        Route::get('export-pdf', [Student\DashboardController::class, 'exportPdf'])->name('export.pdf');
-        Route::get('rules', [Student\RuleListController::class, 'index'])->name('rules');
-        Route::get('appeals', [Student\AppealController::class, 'index'])->name('appeals.index');
-        Route::post('appeals', [Student\AppealController::class, 'store'])->name('appeals.store');
+        Route::get('dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
+        Route::get('export-pdf', [StudentDashboardController::class, 'exportPdf'])->name('export.pdf');
+        Route::get('rules', [RuleListController::class, 'index'])->name('rules');
+        Route::get('appeals', [StudentAppealController::class, 'index'])->name('appeals.index');
+        Route::post('appeals', [StudentAppealController::class, 'store'])->name('appeals.store');
     });
 
 // ── Orang Tua Routes ───────────────────────────────────────────────────
@@ -138,7 +157,7 @@ Route::prefix('student')
 Route::prefix('parent')
     ->name('parent.')
     ->group(function () {
-        Route::get('dashboard', [ParentAccess\DashboardController::class, 'index'])->name('dashboard');
-        Route::get('export-pdf', [ParentAccess\DashboardController::class, 'exportPdf'])->name('export.pdf');
-        Route::get('report', [ParentAccess\ReportController::class, 'behaviorReport'])->name('report');
+        Route::get('dashboard', [ParentDashboardController::class, 'index'])->name('dashboard');
+        Route::get('export-pdf', [ParentDashboardController::class, 'exportPdf'])->name('export.pdf');
+        Route::get('report', [ParentReportController::class, 'behaviorReport'])->name('report');
     });
