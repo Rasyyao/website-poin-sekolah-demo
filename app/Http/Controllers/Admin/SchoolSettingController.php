@@ -11,10 +11,24 @@ class SchoolSettingController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'website_name' => ['nullable', 'string', 'max:100'],
         ]);
 
-        auth()->user()->school->update($validated);
+        $school = auth()->user()->school ?? \App\Models\School::first();
+        if ($school) {
+            $settings = $school->settings ?? [];
+            if ($request->filled('website_name')) {
+                $settings['website_name'] = trim($validated['website_name']);
+            } else {
+                unset($settings['website_name']);
+            }
 
-        return back()->with('success', 'Nama sekolah berhasil diperbarui.');
+            $school->update([
+                'name' => $validated['name'],
+                'settings' => $settings,
+            ]);
+        }
+
+        return back()->with('success', 'Konfigurasi sistem berhasil diperbarui.');
     }
 }

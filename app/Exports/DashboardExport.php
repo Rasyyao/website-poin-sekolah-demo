@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -22,9 +23,9 @@ class DashboardExport implements FromCollection, WithHeadings, WithMapping, Shou
         $this->to = $to;
     }
 
-    public function collection()
+    public function collection(): Collection
     {
-        return $this->logs;
+        return $this->logs instanceof Collection ? $this->logs : collect($this->logs);
     }
 
     public function headings(): array
@@ -47,17 +48,17 @@ class DashboardExport implements FromCollection, WithHeadings, WithMapping, Shou
     public function map($log): array
     {
         return [
-            $log->occurred_at->format('d/m/Y H:i'),
-            $log->student->name,
+            $log->occurred_at ? $log->occurred_at->format('d/m/Y H:i') : '-',
+            $log->student->name ?? '-',
             $log->student->currentClass->name ?? '-',
-            $log->rule->type->label(),
-            $log->rule->name,
-            $log->rule->type->value === 'violation' ? "-{$log->points}" : "+{$log->points}",
+            $log->rule->type->label() ?? '-',
+            $log->rule->name ?? '-',
+            ($log->rule && $log->rule->type->value === 'violation') ? "-{$log->points}" : "+{$log->points}",
             $log->reporter->name ?? 'Sistem',
         ];
     }
 
-    public function styles(Worksheet $sheet)
+    public function styles(Worksheet $sheet): array
     {
         return [
             1 => ['font' => ['bold' => true]],

@@ -10,9 +10,11 @@ class AcademicYearController extends Controller
 {
     public function index()
     {
+        $school = auth()->user()->school ?? \App\Models\School::first();
+        $activeYear = $school?->activeAcademicYear() ?? AcademicYear::where('is_active', true)->first();
         $years = AcademicYear::orderByDesc('year_label')->orderByDesc('semester')->paginate(15);
 
-        return view('admin.academic-years.index', compact('years'));
+        return view('admin.academic-years.index', compact('school', 'activeYear', 'years'));
     }
 
     public function create()
@@ -22,12 +24,22 @@ class AcademicYearController extends Controller
 
     public function store(StoreAcademicYearRequest $request)
     {
-        $year = AcademicYear::create($request->validated());
-        if ($request->boolean('is_active')) {
-            $year->activate();
-        }
+        $schoolId = auth()->user()->school_id ?? \App\Models\School::first()?->id;
 
-        return redirect()->route('admin.academic-years.index')->with('success', 'Tahun ajaran berhasil dibuat.');
+        $year = AcademicYear::firstOrCreate(
+            [
+                'school_id' => $schoolId,
+                'year_label' => $request->year_label,
+                'semester' => $request->semester,
+            ],
+            [
+                'is_active' => true,
+            ]
+        );
+
+        $year->activate();
+
+        return redirect()->route('admin.academic-years.index')->with('success', 'Tahun ajaran berhasil disimpan dan diaktifkan.');
     }
 
     public function show(AcademicYear $academicYear)

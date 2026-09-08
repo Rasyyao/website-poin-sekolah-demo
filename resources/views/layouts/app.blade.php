@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Dashboard') — Poin Sekolah</title>
+    <title>@yield('title', 'Dashboard') — {{ website_name() }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
@@ -90,7 +90,7 @@
                         <div class="w-7 h-7 rounded bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                         </div>
-                        <span class="text-lg font-bold text-slate-900 tracking-tight">Poin Sekolah</span>
+                        <span class="text-lg font-bold text-slate-900 tracking-tight truncate">{{ website_name() }}</span>
                     </a>
                 </div>
                 
@@ -220,15 +220,18 @@
         </div>
     </div>
     <script>
-        // SweetAlert2 dark toast config
+        // SweetAlert2 toast config
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-            timer: 4000,
+            timer: 3500,
             timerProgressBar: true,
             background: '#ffffff',
-            color: '#1f2937',
+            color: '#0f172a',
+            customClass: {
+                popup: 'rounded-xl shadow-xl border border-slate-200 font-medium text-sm text-slate-800'
+            },
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer);
                 toast.addEventListener('mouseleave', Swal.resumeTimer);
@@ -239,7 +242,7 @@
             Toast.fire({
                 icon: 'success',
                 title: @json(session('success')),
-                iconColor: '#22c55e',
+                iconColor: '#16a34a',
             });
         @endif
 
@@ -247,6 +250,14 @@
             Toast.fire({
                 icon: 'error',
                 title: @json(session('error')),
+                iconColor: '#ef4444',
+            });
+        @endif
+
+        @if($errors->any())
+            Toast.fire({
+                icon: 'error',
+                title: @json($errors->first()),
                 iconColor: '#ef4444',
             });
         @endif

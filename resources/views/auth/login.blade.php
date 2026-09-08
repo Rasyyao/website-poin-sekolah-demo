@@ -6,7 +6,7 @@
     {{-- Logo --}}
     <div class="text-center mb-8">
         <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4 shadow-lg shadow-primary-500/25">P</div>
-        <h2 class="text-2xl font-bold text-gray-100">Poin Sekolah</h2>
+        <h2 class="text-2xl font-bold text-gray-100">{{ website_name() }}</h2>
         <p class="text-sm text-gray-400 mt-1">Masuk ke akun Anda</p>
     </div>
 

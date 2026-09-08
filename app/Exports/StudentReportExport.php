@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Student;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -20,9 +21,9 @@ class StudentReportExport implements FromCollection, WithHeadings, WithMapping, 
         $this->logs = $logs;
     }
 
-    public function collection()
+    public function collection(): Collection
     {
-        return $this->logs;
+        return $this->logs instanceof Collection ? $this->logs : collect($this->logs);
     }
 
     public function headings(): array
@@ -41,7 +42,7 @@ class StudentReportExport implements FromCollection, WithHeadings, WithMapping, 
     public function map($log): array
     {
         return [
-            $log->occurred_at->format('d/m/Y H:i'),
+            $log->occurred_at ? $log->occurred_at->format('d/m/Y H:i') : '-',
             $log->rule->name ?? '-',
             $log->rule->type->label() ?? '-',
             $log->points,

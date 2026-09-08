@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Dashboard') — Poin Sekolah</title>
+    <title>@yield('title', 'Dashboard') — {{ website_name() }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
@@ -35,7 +35,7 @@
                 <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white text-sm font-bold shadow-sm group-hover:scale-105 transition-transform">
                     <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                 </div>
-                <span class="font-bold text-slate-900 text-lg tracking-tight hidden sm:inline">Poin Sekolah</span>
+                <span class="font-bold text-slate-900 text-lg tracking-tight hidden sm:inline">{{ website_name() }}</span>
             </a>
         </div>
 
@@ -121,7 +121,7 @@
     </main>
 
     <footer class="text-center text-xs text-slate-400 py-6">
-        Poin Sekolah &copy; {{ now()->year }}
+        {{ website_name() }} &copy; {{ now()->year }}
     </footer>
 
     <script>

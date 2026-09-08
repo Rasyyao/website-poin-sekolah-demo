@@ -1,16 +1,29 @@
 @php
     $user = auth()->user();
     $role = $user?->role?->value;
+    $brandName = website_name();
+    $nameLen = mb_strlen($brandName);
+    if ($nameLen <= 12) {
+        $logoTextClass = 'text-lg';
+    } elseif ($nameLen <= 17) {
+        $logoTextClass = 'text-base';
+    } elseif ($nameLen <= 24) {
+        $logoTextClass = 'text-sm';
+    } else {
+        $logoTextClass = 'text-xs';
+    }
 @endphp
 
 <aside class="w-full h-full bg-white border-r border-slate-200 flex flex-col">
     {{-- Logo --}}
-    <div class="hidden lg:flex h-16 items-center px-6 border-b border-slate-200 shrink-0">
-        <a href="/" class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded bg-blue-600 flex items-center justify-center text-white text-sm font-bold">
+    <div class="hidden lg:flex h-16 items-center px-4 border-b border-slate-200 shrink-0">
+        <a href="/" class="flex items-center gap-2.5 min-w-0 flex-1 overflow-hidden" title="{{ $brandName }}">
+            <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-sm">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             </div>
-            <span class="text-xl font-bold text-slate-900 tracking-tight">Poin Sekolah</span>
+            <span class="{{ $logoTextClass }} font-bold text-slate-900 tracking-tight leading-snug line-clamp-2 break-words">
+                {{ $brandName }}
+            </span>
         </a>
     </div>
 
@@ -91,30 +104,10 @@
         
         @if(in_array($role, ['super_admin', 'admin']))
             <div class="px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mt-6">Pengaturan</div>
-            <div x-data="{ open: {{ request()->routeIs('admin.academic-years.*') ? 'true' : 'false' }} }" class="space-y-1">
-                <button @click="open = !open" type="button" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-colors cursor-pointer {{ request()->routeIs('admin.academic-years.*') ? 'bg-blue-50/50 text-blue-600' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900' }}">
-                    <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        Konfigurasi Sistem
-                    </div>
-                    <svg class="w-4 h-4 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </button>
-                <div x-show="open" style="display: none;"
-                     x-transition:enter="transition ease-out duration-100"
-                     x-transition:enter-start="opacity-0 -translate-y-2"
-                     x-transition:enter-end="opacity-100 translate-y-0"
-                     x-transition:leave="transition ease-in duration-75"
-                     x-transition:leave-start="opacity-100 translate-y-0"
-                     x-transition:leave-end="opacity-0 -translate-y-2"
-                     class="pl-11 pr-3 py-1 space-y-1">
-                    <a href="{{ route('admin.academic-years.index') }}" class="block px-3 py-2 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.academic-years.*') ? 'bg-blue-50 text-blue-600 font-medium' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900' }}">Tahun Ajaran</a>
-                    @if(auth()->user()?->school)
-                    <button type="button" x-data @click="$dispatch('open-school-settings')" class="block w-full text-left px-3 py-2 rounded-lg text-sm transition-colors text-slate-500 hover:bg-slate-50 hover:text-slate-900 cursor-pointer">
-                        Ganti Nama Sekolah
-                    </button>
-                    @endif
-                </div>
-            </div>
+            <a href="{{ route('admin.academic-years.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors {{ request()->routeIs('admin.academic-years.*') ? 'bg-blue-50 text-blue-600 font-medium' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                Konfigurasi Sistem
+            </a>
         @endif
     </nav>
 

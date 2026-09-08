@@ -17,7 +17,7 @@
 <body>
     <div class="header">
         <h2>Laporan Poin Kelas</h2>
-        <h3>{{ $schoolClass->school->name ?? 'Poin Sekolah' }}</h3>
+        <h3>{{ $schoolClass->school->name ?? website_name() }}</h3>
     </div>
     
     <div class="info">

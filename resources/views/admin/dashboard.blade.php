@@ -40,13 +40,7 @@
             </div>
         </div>
         <div>
-            <div class="flex items-center justify-between">
-                <h3 class="text-3xl font-bold text-slate-900">{{ number_format($stats['total_violations']) }}</h3>
-                <span class="flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-red-50 text-red-600">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/></svg>
-                    2,4%
-                </span>
-            </div>
+            <h3 class="text-3xl font-bold text-slate-900">{{ number_format($stats['total_violations']) }}</h3>
             <p class="text-xs text-slate-400 mt-2">{{ number_format($stats['total_violation_points']) }} poin terkumpul</p>
         </div>
     </div>
@@ -59,13 +53,7 @@
             </div>
         </div>
         <div>
-            <div class="flex items-center justify-between">
-                <h3 class="text-3xl font-bold text-slate-900">{{ number_format($stats['total_achievements']) }}</h3>
-                <span class="flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                    8,4%
-                </span>
-            </div>
+            <h3 class="text-3xl font-bold text-slate-900">{{ number_format($stats['total_achievements']) }}</h3>
             <p class="text-xs text-slate-400 mt-2">{{ number_format($stats['total_achievement_points']) }} poin didapat</p>
         </div>
     </div>
@@ -78,14 +66,8 @@
             </div>
         </div>
         <div>
-            <div class="flex items-center justify-between">
-                <h3 class="text-3xl font-bold text-slate-900">{{ number_format($stats['students_with_violations']) }}</h3>
-                <span class="flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-rose-50 text-rose-600">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/></svg>
-                    10,5%
-                </span>
-            </div>
-            <p class="text-xs text-slate-400 mt-2">vs. periode sebelumnya</p>
+            <h3 class="text-3xl font-bold text-slate-900">{{ number_format($stats['students_with_violations']) }}</h3>
+            <p class="text-xs text-slate-400 mt-2">siswa tercatat melanggar</p>
         </div>
     </div>
 
@@ -97,13 +79,7 @@
             </div>
         </div>
         <div>
-            <div class="flex items-center justify-between">
-                <h3 class="text-3xl font-bold text-slate-900">{{ number_format($pendingCount) }}</h3>
-                <span class="flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                    4,4%
-                </span>
-            </div>
+            <h3 class="text-3xl font-bold text-slate-900">{{ number_format($pendingCount) }}</h3>
             <p class="text-xs text-slate-400 mt-2">laporan menunggu</p>
         </div>
     </div>
