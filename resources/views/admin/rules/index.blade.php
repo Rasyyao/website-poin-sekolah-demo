@@ -125,7 +125,7 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 text-center whitespace-nowrap">
-                                    <div class="inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-bold border {{ $rule->type->value === 'violation' ? 'border-red-200 bg-red-50 text-red-600' : 'border-green-200 bg-green-50 text-green-600' }}">
+                                    <div class="inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-bold border {{ $rule->type->value === 'violation' ? 'border-red-500/25 bg-red-500/15 text-red-500' : 'border-green-500/30 bg-green-500/12 text-green-500' }}">
                                         {{ $rule->type->value === 'achievement' ? '+' : '' }}{{ $rule->points }}
                                     </div>
                                 </td>
@@ -133,12 +133,12 @@
                                     @if($isAdmin)
                                         <form method="POST" action="{{ route('admin.rules.toggle-active', $rule) }}" class="inline">
                                             @csrf
-                                            <button type="submit" class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border transition-colors cursor-pointer {{ $rule->is_active ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100' : 'bg-slate-100 text-slate-500 border-slate-200 hover:bg-slate-200' }}">
+                                            <button type="submit" class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border transition-colors cursor-pointer {{ $rule->is_active ? 'bg-green-500/12 text-green-500 border-green-500/30 hover:bg-green-500/20' : 'bg-slate-500/10 text-slate-400 border-slate-500/20 hover:bg-slate-500/20' }}">
                                                 {{ $rule->is_active ? 'Aktif' : 'Nonaktif' }}
                                             </button>
                                         </form>
                                     @else
-                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border {{ $rule->is_active ? 'bg-green-50 text-green-700 border-green-200' : 'bg-slate-100 text-slate-500 border-slate-200' }}">
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border {{ $rule->is_active ? 'bg-green-500/12 text-green-500 border-green-500/30' : 'bg-slate-500/10 text-slate-400 border-slate-500/20' }}">
                                             {{ $rule->is_active ? 'Aktif' : 'Nonaktif' }}
                                         </span>
                                     @endif

@@ -36,8 +36,8 @@
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between min-h-[140px]">
         <div class="flex items-center justify-between mb-4">
             <p class="font-semibold text-slate-900">Total Pelanggaran</p>
-            <div class="text-blue-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-500 border border-blue-500/20 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg>
             </div>
         </div>
         <div>
@@ -49,8 +49,8 @@
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between min-h-[140px]">
         <div class="flex items-center justify-between mb-4">
             <p class="font-semibold text-slate-900">Total Prestasi</p>
-            <div class="text-blue-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-500 border border-blue-500/20 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0"/></svg>
             </div>
         </div>
         <div>
@@ -62,8 +62,8 @@
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between min-h-[140px]">
         <div class="flex items-center justify-between mb-4">
             <p class="font-semibold text-slate-900">Siswa Bermasalah</p>
-            <div class="text-blue-600">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/></svg>
+            <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-500 border border-blue-500/20 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2.25m0 4.5h.008v.008H12v-.008zM10.29 3.86l-8.16 14.14A2 2 0 004 21h16a2 2 0 001.87-3l-8.16-14.14a2 2 0 00-3.42 0z"/></svg>
             </div>
         </div>
         <div>
@@ -75,8 +75,8 @@
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between min-h-[140px]">
         <div class="flex items-center justify-between mb-4">
             <p class="font-semibold text-slate-900">Pending Approval</p>
-            <div class="w-6 h-6 rounded bg-blue-50 text-blue-600 flex items-center justify-center">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+            <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-500 border border-blue-500/20 flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
             </div>
         </div>
         <div>
@@ -103,7 +103,7 @@
                     <h3 class="font-semibold text-slate-900">Persebaran Siswa</h3>
                     <p class="text-xs text-slate-400 mt-0.5">Jumlah siswa per kelas</p>
                 </div>
-                <span class="text-xs font-semibold px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full">
+                <span class="text-xs font-semibold px-2.5 py-1 bg-blue-500/10 text-blue-500 border border-blue-500/20 rounded-full">
                     {{ $classDistributionData['total_classes'] ?? count($classDistributionData['labels']) }} Kelas
                 </span>
             </div>
@@ -151,60 +151,60 @@
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     {{-- Top Violators --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-        <div class="flex items-center justify-between mb-6">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4">
             <h3 class="font-semibold text-slate-900">Pelanggaran Terbanyak</h3>
-            <button class="text-slate-400 hover:text-slate-600">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"/></svg>
-            </button>
+            <a href="{{ route('admin.students.index') }}" class="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors">
+                Lihat Semua
+            </a>
         </div>
-        <div class="space-y-4">
+        <div class="space-y-5">
             @forelse($topViolators as $i => $entry)
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <div class="w-2 h-8 rounded {{ $i === 0 ? 'bg-blue-500' : ($i === 1 ? 'bg-blue-400' : 'bg-slate-200') }}"></div>
+                        <span class="text-xs font-bold text-slate-400 w-4 text-center">{{ $i + 1 }}</span>
                         <div>
                             <p class="text-sm font-semibold text-slate-900">{{ $entry['student']->name }}</p>
-                            <p class="text-xs text-slate-500">{{ $entry['violation_count'] }} pelanggaran</p>
+                            <p class="text-xs text-slate-400">{{ $entry['violation_count'] }} pelanggaran</p>
                         </div>
                     </div>
-                    <span class="text-sm font-semibold text-rose-500 bg-rose-50 px-2 py-1 rounded">{{ $entry['total_points'] }}</span>
+                    <span class="text-xs font-semibold text-red-500 bg-red-500/10 border border-red-500/20 px-2.5 py-1 rounded-lg tabular-nums">{{ $entry['total_points'] }}</span>
                 </div>
             @empty
-                <p class="text-sm text-slate-500 text-center py-4">Belum ada data pelanggaran.</p>
+                <p class="text-sm text-slate-400 text-center py-4">Belum ada data pelanggaran.</p>
             @endforelse
         </div>
     </div>
 
     {{-- Recent Points Log --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-        <div class="flex items-center justify-between mb-6">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4">
             <h3 class="font-semibold text-slate-900">Aktivitas Terbaru</h3>
-            <button class="text-slate-400 hover:text-slate-600">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"/></svg>
-            </button>
+            <a href="{{ route('admin.points-log.index') }}" class="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors">
+                Lihat Semua
+            </a>
         </div>
         <div class="space-y-4">
             @forelse($recentLogs as $log)
-                <div class="flex items-center justify-between pb-3 {{ !$loop->last ? 'border-b border-slate-100' : '' }}">
+                <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs {{ $log->rule->type->value === 'violation' ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600' }}">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs {{ $log->rule->type->value === 'violation' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' }}">
                             {{ substr($log->student->name, 0, 1) }}
                         </div>
                         <div>
                             <p class="text-sm font-medium text-slate-900">{{ $log->student->name }}</p>
-                            <p class="text-xs text-slate-500">{{ Str::limit($log->rule->name, 35) }}</p>
+                            <p class="text-xs text-slate-400">{{ $log->rule->name }}</p>
                         </div>
                     </div>
                     <div class="text-right">
-                        <span class="text-sm font-bold {{ $log->rule->type->value === 'violation' ? 'text-rose-500' : 'text-emerald-500' }}">
+                        <span class="text-sm font-bold tabular-nums {{ $log->rule->type->value === 'violation' ? 'text-red-500' : 'text-emerald-500' }}">
                             {{ $log->rule->type->value === 'achievement' ? '+' : '-' }}{{ $log->points }}
                         </span>
                         <p class="text-[10px] text-slate-400">{{ $log->occurred_at->diffForHumans() }}</p>
                     </div>
                 </div>
             @empty
-                <p class="text-sm text-slate-500 text-center py-4">Belum ada aktivitas.</p>
+                <p class="text-sm text-slate-400 text-center py-4">Belum ada aktivitas.</p>
             @endforelse
         </div>
     </div>

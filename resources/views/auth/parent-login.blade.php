@@ -14,7 +14,7 @@
             document.addEventListener("DOMContentLoaded", function() {
                 Swal.fire({
                     title: 'Login Gagal',
-                    html: `{!! implode('<br>', $errors->all()) !!}`,
+                    html: @json(implode('<br>', array_map('e', $errors->all()))),
                     icon: 'error',
                     background: '#ffffff',
                     color: '#1f2937',

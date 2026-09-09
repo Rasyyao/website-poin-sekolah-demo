@@ -133,7 +133,7 @@ class ReportController extends Controller
 
         $pdf->setPaper('a4', 'landscape');
 
-        return $pdf->download('laporan-kelas-' . $schoolClass->name . '.pdf');
+        return $pdf->download('laporan-kelas-' . \Illuminate\Support\Str::slug($schoolClass->name) . '.pdf');
     }
 
     public function exportClassExcel(Request $request, int $classId)
@@ -143,6 +143,6 @@ class ReportController extends Controller
         $stats = $this->reportService->classStats($schoolId, $classId);
 
         $export = new \App\Exports\ClassReportMultiSheetExport($schoolClass, $stats);
-        return $export->download('laporan-kelas-' . $schoolClass->name . '.xlsx');
+        return $export->download('laporan-kelas-' . \Illuminate\Support\Str::slug($schoolClass->name) . '.xlsx');
     }
 }

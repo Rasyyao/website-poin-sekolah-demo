@@ -31,13 +31,16 @@ class PointsService
         ?\DateTimeInterface $occurredAt = null,
     ): PointsLog {
         return DB::transaction(function () use ($student, $rule, $reporter, $note, $evidenceUrl, $occurredAt) {
+            // Pessimistic row locking to serialize concurrent point records and threshold evaluations
+            $lockedStudent = Student::withoutGlobalScopes()->where('id', $student->id)->lockForUpdate()->firstOrFail();
+
             $status = $rule->requiresApproval()
                 ? PointsLogStatus::Pending
                 : PointsLogStatus::Approved;
 
             $pointsLog = PointsLog::create([
-                'school_id' => $student->school_id,
-                'student_id' => $student->id,
+                'school_id' => $lockedStudent->school_id,
+                'student_id' => $lockedStudent->id,
                 'rule_id' => $rule->id,
                 'reported_by' => $reporter->id,
                 'points' => $rule->points, // snapshot
@@ -49,7 +52,7 @@ class PointsService
 
             // Only check thresholds for auto-approved entries
             if ($status === PointsLogStatus::Approved && $rule->type === RuleType::Violation) {
-                $this->thresholdEngine->evaluate($student);
+                $this->thresholdEngine->evaluate($lockedStudent);
             }
 
             return $pointsLog;
@@ -61,11 +64,14 @@ class PointsService
      */
     public function approve(PointsLog $pointsLog): void
     {
-        $pointsLog->approve();
+        DB::transaction(function () use ($pointsLog) {
+            $lockedStudent = Student::withoutGlobalScopes()->where('id', $pointsLog->student_id)->lockForUpdate()->firstOrFail();
+            $pointsLog->approve();
 
-        if ($pointsLog->rule->type === RuleType::Violation) {
-            $this->thresholdEngine->evaluate($pointsLog->student);
-        }
+            if ($pointsLog->rule->type === RuleType::Violation) {
+                $this->thresholdEngine->evaluate($lockedStudent);
+            }
+        });
     }
 
     /**
@@ -73,7 +79,9 @@ class PointsService
      */
     public function reject(PointsLog $pointsLog): void
     {
-        $pointsLog->reject();
+        DB::transaction(function () use ($pointsLog) {
+            $pointsLog->reject();
+        });
     }
 
     /**
@@ -81,16 +89,24 @@ class PointsService
      */
     public function correctPoints(PointsLog $pointsLog, array $data): PointsLog
     {
-        if (isset($data['rule_id']) && ! isset($data['points'])) {
-            $rule = Rule::find($data['rule_id']);
-            if ($rule) {
-                $data['points'] = $rule->points;
+        return DB::transaction(function () use ($pointsLog, $data) {
+            $lockedStudent = Student::withoutGlobalScopes()->where('id', $pointsLog->student_id)->lockForUpdate()->firstOrFail();
+
+            if (isset($data['rule_id']) && ! isset($data['points'])) {
+                $rule = Rule::find($data['rule_id']);
+                if ($rule) {
+                    $data['points'] = $rule->points;
+                }
             }
-        }
 
-        $pointsLog->update($data);
+            $pointsLog->update($data);
 
-        return $pointsLog->fresh();
+            if ($pointsLog->rule->type === RuleType::Violation) {
+                $this->thresholdEngine->evaluate($lockedStudent);
+            }
+
+            return $pointsLog->fresh();
+        });
     }
 
     /**

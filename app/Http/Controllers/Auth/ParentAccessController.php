@@ -36,6 +36,7 @@ class ParentAccessController extends Controller
             ]);
         }
 
+        $request->session()->regenerate();
         $request->session()->put('parent_student_id', $student->id);
         $request->session()->put('parent_school_id', $student->school_id);
 
@@ -45,6 +46,8 @@ class ParentAccessController extends Controller
     public function logout(Request $request)
     {
         $request->session()->forget(['parent_student_id', 'parent_school_id']);
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect()->route('parent.login.form');
     }

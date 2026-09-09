@@ -101,7 +101,7 @@
                          @click.away="isSearchOpen = false"
                          class="hidden md:block relative z-[100] w-full max-w-xl">
                          
-                        <form action="{{ $searchRoute }}" method="GET" class="relative items-center bg-slate-100 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 transition-shadow flex w-full">
+                        <form action="{{ $searchRoute }}" method="GET" class="relative items-center bg-slate-100 rounded-lg focus-within:ring-2 focus-within:ring-blue-500/30 transition-all flex w-full search-bar-form">
                             <svg class="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                             <input type="text" x-ref="searchInput" name="search" x-model="searchQuery" @focus="isSearchOpen = true" @input="isSearchOpen = true" autocomplete="off" placeholder="Search anything..." class="pl-9 pr-14 py-2 bg-transparent border-none outline-none focus:outline-none rounded-lg text-sm text-slate-900 focus:ring-0 w-full placeholder-slate-400">
                             <button type="submit" class="absolute right-2 flex items-center justify-center bg-white rounded border border-slate-200 px-1.5 py-0.5 hover:bg-slate-50 cursor-pointer" title="Press ⌘K to focus">
@@ -170,7 +170,7 @@
                             <p class="text-sm font-semibold text-slate-800 truncate max-w-[140px] leading-tight">{{ auth()->user()->name }}</p>
                             <p class="text-xs text-slate-400 truncate capitalize leading-tight">{{ str_replace('_', ' ', auth()->user()->role?->value ?? '-') }}</p>
                         </div>
-                        <div class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold border border-blue-200 shadow-sm text-sm">
+                        <div class="w-9 h-9 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold border border-blue-500/30 shadow-sm text-sm">
                             {{ strtoupper(substr(auth()->user()->name ?? 'G', 0, 1)) }}
                         </div>
                     </div>

@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
             'school.active' => \App\Http\Middleware\EnsureSchoolIsActive::class,
+            'parent.auth' => \App\Http\Middleware\EnsureParentAuthenticated::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

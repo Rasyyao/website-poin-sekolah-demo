@@ -101,13 +101,13 @@
                     <td class="px-6 py-4 text-sm text-slate-500">{{ $student->currentClass?->name ?? '-' }}</td>
                     <td class="px-6 py-4 text-sm text-center">
                         @php $vp = $student->totalViolationPoints(); @endphp
-                        <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold {{ $vp > 0 ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-slate-50 text-slate-400 border border-slate-200' }}">
+                        <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold {{ $vp > 0 ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'bg-slate-500/10 text-slate-400 border border-slate-500/15' }}">
                             {{ $vp }}
                         </span>
                     </td>
                     <td class="px-6 py-4 text-sm text-center">
                         @php $ap = $student->totalAchievementPoints(); @endphp
-                        <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold {{ $ap > 0 ? 'bg-green-50 text-green-600 border border-green-200' : 'bg-slate-50 text-slate-400 border border-slate-200' }}">
+                        <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-xs font-bold {{ $ap > 0 ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-slate-500/10 text-slate-400 border border-slate-500/15' }}">
                             {{ $ap > 0 ? '+' : '' }}{{ $ap }}
                         </span>
                     </td>

@@ -150,12 +150,12 @@
                             </td>
                             <td class="px-6 py-4 text-sm text-slate-700">{{ $log->rule->name ?? '-' }}</td>
                             <td class="px-6 py-4 text-center">
-                                <div class="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-bold border {{ $log->rule->type->value === 'violation' ? 'bg-red-50 text-red-600 border-red-200' : 'bg-emerald-50 text-emerald-600 border-emerald-200' }}">
+                                <div class="inline-flex items-center justify-center px-2.5 py-1 rounded-md text-xs font-bold border {{ $log->rule->type->value === 'violation' ? 'bg-red-500/15 text-red-500 border-red-500/25' : 'bg-green-500/12 text-green-500 border-green-500/30' }}">
                                     {{ $log->rule->type->value === 'achievement' ? '+' : '' }}{{ $log->points }}
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium border {{ $log->status->value === 'approved' ? 'bg-green-500/10 text-green-600 border-green-500/20' : ($log->status->value === 'pending' ? 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20' : 'bg-red-500/10 text-red-600 border-red-500/20') }}">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium border {{ $log->status->value === 'approved' ? 'bg-green-500/12 text-green-500 border-green-500/30' : ($log->status->value === 'pending' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' : 'bg-red-500/15 text-red-500 border-red-500/25') }}">
                                     {{ $log->status->label() }}
                                 </span>
                             </td>
@@ -171,7 +171,7 @@
                                             evidence_url: @js($log->evidence_url ?? ''),
                                             update_url: '{{ route('teacher.points.update', $log) }}'
                                         })"
-                                        class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-100 transition-colors border border-amber-200 cursor-pointer" title="Edit Log Poin">
+                                        class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 transition-colors border border-amber-500/20" title="Edit Log Poin">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                                     </button>
                                     <form method="POST" action="{{ route('teacher.points.destroy', $log) }}" class="inline delete-form">
@@ -179,7 +179,7 @@
                                         @method('DELETE')
                                         <button type="button"
                                             onclick="Swal.fire({ title: 'Hapus log poin?', text: 'Log poin ini akan dihapus permanen.', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', cancelButtonColor: '#64748b', confirmButtonText: 'Ya, hapus!', cancelButtonText: 'Batal' }).then(r => { if(r.isConfirmed) this.closest('form').submit(); })"
-                                            class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors border border-red-200 cursor-pointer" title="Hapus Log Poin">
+                                            class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-colors border border-red-500/20 cursor-pointer" title="Hapus Log Poin">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                         </button>
                                     </form>
@@ -254,19 +254,19 @@
                             <div class="inline-flex rounded-lg bg-slate-100 p-0.5 border border-slate-200 text-xs" x-data="{ activeFilter: 'all' }">
                                 <button type="button" 
                                         @click="activeFilter = 'all'; if(window.filterRuleDropdown) window.filterRuleDropdown('all')"
-                                        :class="activeFilter === 'all' ? 'bg-white text-slate-900 font-semibold shadow-xs' : 'text-slate-500 hover:text-slate-800'"
+                                        :class="activeFilter === 'all' ? 'bg-blue-500/10 text-blue-500 font-semibold shadow-xs' : 'text-slate-500 hover:text-slate-800'"
                                         class="px-2.5 py-1 rounded-md transition-all cursor-pointer">
                                     Semua
                                 </button>
                                 <button type="button" 
                                         @click="activeFilter = 'violation'; if(window.filterRuleDropdown) window.filterRuleDropdown('violation')"
-                                        :class="activeFilter === 'violation' ? 'bg-red-50 text-red-600 border border-red-200 font-semibold shadow-xs' : 'text-slate-500 hover:text-slate-800'"
+                                        :class="activeFilter === 'violation' ? 'bg-red-500/15 text-red-500 border border-red-500/25 font-semibold shadow-xs' : 'text-slate-500 hover:text-slate-800'"
                                         class="px-2.5 py-1 rounded-md transition-all cursor-pointer">
                                     Pelanggaran
                                 </button>
                                 <button type="button" 
                                         @click="activeFilter = 'achievement'; if(window.filterRuleDropdown) window.filterRuleDropdown('achievement')"
-                                        :class="activeFilter === 'achievement' ? 'bg-emerald-50 text-emerald-600 border border-emerald-200 font-semibold shadow-xs' : 'text-slate-500 hover:text-slate-800'"
+                                        :class="activeFilter === 'achievement' ? 'bg-green-500/12 text-green-500 border border-green-500/30 font-semibold shadow-xs' : 'text-slate-500 hover:text-slate-800'"
                                         class="px-2.5 py-1 rounded-md transition-all cursor-pointer">
                                     Prestasi
                                 </button>
@@ -430,9 +430,9 @@
                         <div class="flex items-center justify-between mb-2">
                             <label class="block text-sm font-medium text-slate-700">Peraturan <span class="text-red-500">*</span></label>
                             <div class="inline-flex rounded-lg bg-slate-100 p-0.5 border border-slate-200 text-xs">
-                                <button type="button" @click="editRuleFilter = 'all'" :class="editRuleFilter === 'all' ? 'bg-white text-slate-900 font-semibold shadow-xs' : 'text-slate-500 hover:text-slate-800'" class="px-2.5 py-1 rounded-md transition-all cursor-pointer">Semua</button>
-                                <button type="button" @click="editRuleFilter = 'violation'" :class="editRuleFilter === 'violation' ? 'bg-red-50 text-red-600 border border-red-200 font-semibold shadow-xs' : 'text-slate-500 hover:text-slate-800'" class="px-2.5 py-1 rounded-md transition-all cursor-pointer">Pelanggaran</button>
-                                <button type="button" @click="editRuleFilter = 'achievement'" :class="editRuleFilter === 'achievement' ? 'bg-emerald-50 text-emerald-600 border border-emerald-200 font-semibold shadow-xs' : 'text-slate-500 hover:text-slate-800'" class="px-2.5 py-1 rounded-md transition-all cursor-pointer">Prestasi</button>
+                                <button type="button" @click="editRuleFilter = 'all'" :class="editRuleFilter === 'all' ? 'bg-blue-500/10 text-blue-500 font-semibold shadow-xs' : 'text-slate-500 hover:text-slate-800'" class="px-2.5 py-1 rounded-md transition-all cursor-pointer">Semua</button>
+                                <button type="button" @click="editRuleFilter = 'violation'" :class="editRuleFilter === 'violation' ? 'bg-red-500/15 text-red-500 border border-red-500/25 font-semibold shadow-xs' : 'text-slate-500 hover:text-slate-800'" class="px-2.5 py-1 rounded-md transition-all cursor-pointer">Pelanggaran</button>
+                                <button type="button" @click="editRuleFilter = 'achievement'" :class="editRuleFilter === 'achievement' ? 'bg-green-500/12 text-green-500 border border-green-500/30 font-semibold shadow-xs' : 'text-slate-500 hover:text-slate-800'" class="px-2.5 py-1 rounded-md transition-all cursor-pointer">Prestasi</button>
                             </div>
                         </div>
                         <select name="rule_id" x-model="editLog.rule_id" required class="w-full px-4 py-2.5 rounded-lg bg-white border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">

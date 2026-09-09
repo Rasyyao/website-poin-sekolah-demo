@@ -202,6 +202,7 @@ class DatabaseSeeder extends Seeder
             ['student_index' => 1, 'logs' => [[7, 1], [4, 1]]], // > 100
             ['student_index' => 2, 'logs' => [[5, 1], [2, 1]]], // > 50
             ['student_index' => 3, 'logs' => [[3, 1], [2, 1]]], // > 25
+            ['student_index' => 4, 'logs' => [[1, 1]]],          // > 10
         ];
 
         foreach ($scenarios as $scenario) {

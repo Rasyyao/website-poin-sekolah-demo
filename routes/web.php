@@ -39,12 +39,12 @@ Route::get('/', function () {
 
 Route::prefix('auth')->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('login', [LoginController::class, 'login'])->name('login.submit');
+    Route::post('login', [LoginController::class, 'login'])->middleware('throttle:5,1')->name('login.submit');
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
     // Parent access (via student NISN + access code)
     Route::get('parent/login', [ParentAccessController::class, 'showLoginForm'])->name('parent.login.form');
-    Route::post('parent/login', [ParentAccessController::class, 'login'])->name('parent.login');
+    Route::post('parent/login', [ParentAccessController::class, 'login'])->middleware('throttle:5,1')->name('parent.login');
     Route::post('parent/logout', [ParentAccessController::class, 'logout'])->name('parent.logout');
 
     // Demo One-Click Login
@@ -148,6 +148,7 @@ Route::prefix('teacher')
 
 Route::prefix('student')
     ->name('student.')
+    ->middleware('parent.auth')
     ->group(function () {
         Route::get('dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
         Route::get('export-pdf', [StudentDashboardController::class, 'exportPdf'])->name('export.pdf');
@@ -156,10 +157,9 @@ Route::prefix('student')
         Route::post('appeals', [StudentAppealController::class, 'store'])->name('appeals.store');
     });
 
-
-
 Route::prefix('parent')
     ->name('parent.')
+    ->middleware('parent.auth')
     ->group(function () {
         Route::get('dashboard', [ParentDashboardController::class, 'index'])->name('dashboard');
         Route::get('export-pdf', [ParentDashboardController::class, 'exportPdf'])->name('export.pdf');

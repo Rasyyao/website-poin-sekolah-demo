@@ -164,6 +164,42 @@ html:not(.dark) .bg-surface-light {
     border-color: #94a3b8 transparent transparent transparent !important;
 }
 
+/* TomSelect Dark Mode Overrides */
+.dark .ts-control {
+    background-color: var(--color-slate-100) !important; /* #1e293b in dark */
+    border-color: var(--color-slate-200) !important;     /* #334155 in dark */
+    color: var(--color-slate-900) !important;            /* #f8fafc in dark */
+}
+.dark .ts-control > input {
+    color: var(--color-slate-900) !important;
+    background-color: transparent !important;
+}
+.dark .ts-control > input::placeholder {
+    color: var(--color-slate-400) !important;
+}
+.dark .ts-dropdown {
+    background-color: var(--color-slate-100) !important;
+    border-color: var(--color-slate-200) !important;
+    color: var(--color-slate-900) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4) !important;
+}
+.dark .ts-dropdown .optgroup-header {
+    background-color: var(--color-slate-50) !important;  /* #0f172a in dark */
+    color: var(--color-slate-400) !important;
+    border-bottom-color: var(--color-slate-200) !important;
+}
+.dark .ts-dropdown .optgroup:not(:first-child) {
+    border-top-color: var(--color-slate-200) !important;
+}
+.dark .ts-dropdown .option:hover,
+.dark .ts-dropdown .option.active {
+    background-color: rgba(59, 130, 246, 0.15) !important;
+    color: #60a5fa !important; /* blue-400 */
+}
+.dark .ts-wrapper.single .ts-control::after {
+    border-color: var(--color-slate-400) transparent transparent transparent !important;
+}
+
 /* SweetAlert Dark Theme Overrides */
 .dark .swal2-popup {
     background-color: var(--color-slate-100) !important;
@@ -175,7 +211,16 @@ html:not(.dark) .bg-surface-light {
 
 [x-cloak] { display: none !important; }
 
-/* Rule Category Badges */
+/* Search Bar - natural, subtle border in both themes */
+.search-bar-form {
+    border: 1px solid rgba(148, 163, 184, 0.3); /* slate-400/30 — barely-there in light */
+}
+.dark .search-bar-form {
+    border: 1px solid rgba(100, 116, 139, 0.45); /* slate-500/45 — natural slate in dark */
+}
+
+
+/* Rule Category Badges — alpha-based so they work in both light and dark themes */
 .badge-cat {
     display: inline-flex;
     align-items: center;
@@ -188,48 +233,48 @@ html:not(.dark) .bg-surface-light {
     border-style: solid;
 }
 .badge-cat.cat-ringan {
-    background-color: #fef3c7;
-    color: #92400e;
-    border-color: #fcd34d;
+    background-color: rgba(245, 158, 11, 0.12);
+    color: rgba(217, 119, 6, 1);
+    border-color: rgba(245, 158, 11, 0.3);
 }
 .badge-cat.cat-sedang {
-    background-color: #ffedd5;
-    color: #9a3412;
-    border-color: #fdba74;
+    background-color: rgba(249, 115, 22, 0.12);
+    color: rgba(234, 88, 12, 1);
+    border-color: rgba(249, 115, 22, 0.3);
 }
 .badge-cat.cat-berat {
-    background-color: #fee2e2;
-    color: #991b1b;
-    border-color: #fca5a5;
+    background-color: rgba(239, 68, 68, 0.12);
+    color: rgba(220, 38, 38, 1);
+    border-color: rgba(239, 68, 68, 0.3);
 }
 .badge-cat.cat-akademik {
-    background-color: #dbeafe;
-    color: #1e40af;
-    border-color: #93c5fd;
+    background-color: rgba(59, 130, 246, 0.12);
+    color: rgba(37, 99, 235, 1);
+    border-color: rgba(59, 130, 246, 0.3);
 }
 .badge-cat.cat-non_akademik {
-    background-color: #d1fae5;
-    color: #065f46;
-    border-color: #6ee7b7;
+    background-color: rgba(16, 185, 129, 0.12);
+    color: rgba(5, 150, 105, 1);
+    border-color: rgba(16, 185, 129, 0.3);
 }
 .badge-cat.cat-kedisiplinan {
-    background-color: #ccfbf1;
-    color: #115e59;
-    border-color: #5eead4;
+    background-color: rgba(20, 184, 166, 0.12);
+    color: rgba(15, 118, 110, 1);
+    border-color: rgba(20, 184, 166, 0.3);
 }
 .badge-cat.cat-organisasi {
-    background-color: #f3e8ff;
-    color: #6b21a8;
-    border-color: #d8b4fe;
+    background-color: rgba(168, 85, 247, 0.12);
+    color: rgba(147, 51, 234, 1);
+    border-color: rgba(168, 85, 247, 0.3);
 }
 .badge-cat.cat-sosial {
-    background-color: #ffe4e6;
-    color: #9f1239;
-    border-color: #fda4af;
+    background-color: rgba(244, 63, 94, 0.12);
+    color: rgba(225, 29, 72, 1);
+    border-color: rgba(244, 63, 94, 0.3);
 }
 .badge-cat.cat-default {
-    background-color: #f1f5f9;
-    color: #334155;
-    border-color: #cbd5e1;
+    background-color: rgba(100, 116, 139, 0.12);
+    color: rgba(71, 85, 105, 1);
+    border-color: rgba(100, 116, 139, 0.3);
 }
 
