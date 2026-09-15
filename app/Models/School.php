@@ -65,6 +65,11 @@ class School extends Model
         return $this->hasMany(NotificationLog::class);
     }
 
+    public function certificates(): HasMany
+    {
+        return $this->hasMany(Certificate::class);
+    }
+
     // ── Helpers ─────────────────────────────────────────────
 
     public function isAccessible(): bool
@@ -75,5 +80,41 @@ class School extends Model
     public function activeAcademicYear(): ?AcademicYear
     {
         return $this->academicYears()->where('is_active', true)->first();
+    }
+
+    // ── Certificate Signatories ─────────────────────────────
+
+    public function principalName(): ?string
+    {
+        return $this->settings['principal_name'] ?? null;
+    }
+
+    public function principalSignaturePath(): ?string
+    {
+        return $this->settings['principal_signature'] ?? null;
+    }
+
+    public function principalSignatureUrl(): ?string
+    {
+        $path = $this->principalSignaturePath();
+
+        return $path ? \Illuminate\Support\Facades\Storage::disk('public')->url($path) : null;
+    }
+
+    public function kesiswaanName(): ?string
+    {
+        return $this->settings['kesiswaan_name'] ?? null;
+    }
+
+    public function kesiswaanSignaturePath(): ?string
+    {
+        return $this->settings['kesiswaan_signature'] ?? null;
+    }
+
+    public function kesiswaanSignatureUrl(): ?string
+    {
+        $path = $this->kesiswaanSignaturePath();
+
+        return $path ? \Illuminate\Support\Facades\Storage::disk('public')->url($path) : null;
     }
 }

@@ -70,6 +70,31 @@
         </div>
     </div>
 
+    @if($certificates->isNotEmpty())
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm mb-6">
+        <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/50">
+            <h3 class="text-base font-semibold text-slate-800 flex items-center gap-2">
+                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Sertifikat Saya
+            </h3>
+        </div>
+        <div class="divide-y divide-slate-100">
+            @foreach($certificates as $certificate)
+                <div class="px-6 py-4 flex items-center justify-between gap-4">
+                    <div>
+                        <p class="text-sm font-medium text-slate-900">{{ $certificate->ruleThreshold->action ?? 'Sertifikat Penghargaan' }}</p>
+                        <p class="text-xs text-slate-400">No. {{ $certificate->certificate_number }} &middot; {{ $certificate->issued_at->format('d M Y') }}</p>
+                    </div>
+                    <a target="_blank" href="{{ route('student.certificates.print', $certificate) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200 text-xs font-medium hover:bg-emerald-100 transition-colors shrink-0">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+                        Unduh
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
     <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
         <div class="px-6 py-4 border-b border-slate-200 bg-slate-50/50">
             <h3 class="text-base font-semibold text-slate-800 flex items-center gap-2">

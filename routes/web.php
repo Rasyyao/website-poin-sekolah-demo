@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AcademicYearController;
 use App\Http\Controllers\Admin\AppealController as AdminAppealController;
+use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\ClassController;
 use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\PointsLogController;
@@ -69,6 +70,7 @@ Route::prefix('admin')
         // Settings & Staff Management (Super Admin & Admin Sekolah ONLY - Kesiswaan & Guru prohibited)
         Route::middleware(['role:super_admin,admin'])->group(function () {
             Route::put('school/update', [SchoolSettingController::class, 'update'])->name('school.update');
+            Route::put('school/signatories', [SchoolSettingController::class, 'updateSignatories'])->name('school.signatories.update');
             Route::resource('staff', StaffController::class)->except(['show', 'create']);
             Route::resource('academic-years', AcademicYearController::class);
             Route::post('academic-years/{academicYear}/activate', [AcademicYearController::class, 'activate'])->name('academic-years.activate');
@@ -124,6 +126,15 @@ Route::prefix('admin')
             Route::get('reports/class/{classId}', [AdminReportController::class, 'classStats'])->name('reports.class');
             Route::get('reports/class/{classId}/export/pdf', [AdminReportController::class, 'exportClassPdf'])->name('reports.class.export.pdf');
             Route::get('reports/class/{classId}/export/excel', [AdminReportController::class, 'exportClassExcel'])->name('reports.class.export.excel');
+
+            // Sertifikat Penghargaan (auto-issued from achievement thresholds)
+            Route::get('certificates', [CertificateController::class, 'index'])->name('certificates.index');
+            Route::get('certificates/{certificate}/print', [CertificateController::class, 'print'])->name('certificates.print');
+        });
+
+        // Delete a wrongly-issued certificate (Super Admin & Admin Sekolah ONLY)
+        Route::middleware(['role:super_admin,admin'])->group(function () {
+            Route::delete('certificates/{certificate}', [CertificateController::class, 'destroy'])->name('certificates.destroy');
         });
     });
 
@@ -152,6 +163,7 @@ Route::prefix('student')
     ->group(function () {
         Route::get('dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
         Route::get('export-pdf', [StudentDashboardController::class, 'exportPdf'])->name('export.pdf');
+        Route::get('certificates/{certificate}/print', [StudentDashboardController::class, 'printCertificate'])->name('certificates.print');
         Route::get('rules', [RuleListController::class, 'index'])->name('rules');
         Route::get('appeals', [StudentAppealController::class, 'index'])->name('appeals.index');
         Route::post('appeals', [StudentAppealController::class, 'store'])->name('appeals.store');
@@ -163,5 +175,6 @@ Route::prefix('parent')
     ->group(function () {
         Route::get('dashboard', [ParentDashboardController::class, 'index'])->name('dashboard');
         Route::get('export-pdf', [ParentDashboardController::class, 'exportPdf'])->name('export.pdf');
+        Route::get('certificates/{certificate}/print', [ParentDashboardController::class, 'printCertificate'])->name('certificates.print');
         Route::get('report', [ParentReportController::class, 'behaviorReport'])->name('report');
     });

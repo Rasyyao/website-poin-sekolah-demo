@@ -14,6 +14,7 @@ class PointsService
 {
     public function __construct(
         private ThresholdEngine $thresholdEngine,
+        private CertificateEngine $certificateEngine,
     ) {}
 
     /**
@@ -51,8 +52,12 @@ class PointsService
             ]);
 
             // Only check thresholds for auto-approved entries
-            if ($status === PointsLogStatus::Approved && $rule->type === RuleType::Violation) {
-                $this->thresholdEngine->evaluate($lockedStudent);
+            if ($status === PointsLogStatus::Approved) {
+                if ($rule->type === RuleType::Violation) {
+                    $this->thresholdEngine->evaluate($lockedStudent);
+                } elseif ($rule->type === RuleType::Achievement) {
+                    $this->certificateEngine->evaluate($lockedStudent);
+                }
             }
 
             return $pointsLog;
@@ -70,6 +75,8 @@ class PointsService
 
             if ($pointsLog->rule->type === RuleType::Violation) {
                 $this->thresholdEngine->evaluate($lockedStudent);
+            } elseif ($pointsLog->rule->type === RuleType::Achievement) {
+                $this->certificateEngine->evaluate($lockedStudent);
             }
         });
     }
@@ -103,6 +110,8 @@ class PointsService
 
             if ($pointsLog->rule->type === RuleType::Violation) {
                 $this->thresholdEngine->evaluate($lockedStudent);
+            } elseif ($pointsLog->rule->type === RuleType::Achievement) {
+                $this->certificateEngine->evaluate($lockedStudent);
             }
 
             return $pointsLog->fresh();

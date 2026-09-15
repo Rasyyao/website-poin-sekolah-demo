@@ -10,9 +10,10 @@ class RuleThresholdController extends Controller
 {
     public function index()
     {
-        $thresholds = RuleThreshold::orderBy('min_points')->paginate(15);
+        $violationThresholds = RuleThreshold::violations()->orderBy('min_points')->get();
+        $achievementThresholds = RuleThreshold::achievements()->orderBy('min_points')->get();
 
-        return view('admin.thresholds.index', compact('thresholds'));
+        return view('admin.thresholds.index', compact('violationThresholds', 'achievementThresholds'));
     }
 
     public function create()

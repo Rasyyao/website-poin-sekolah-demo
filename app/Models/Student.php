@@ -61,6 +61,11 @@ class Student extends Model
         return $this->hasMany(NotificationLog::class);
     }
 
+    public function certificates(): HasMany
+    {
+        return $this->hasMany(Certificate::class);
+    }
+
     // ── Computed Attributes ─────────────────────────────────
 
     /**

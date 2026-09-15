@@ -15,6 +15,7 @@ class StoreRuleThresholdRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'type' => ['required', 'in:violation,achievement'],
             'min_points' => ['required', 'integer', 'min:1'],
             'action' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:500'],

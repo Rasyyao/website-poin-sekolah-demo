@@ -26,6 +26,12 @@ class DashboardController extends Controller
             ->limit(20)
             ->get();
 
+        $certificates = $student->certificates()
+            ->withoutGlobalScopes()
+            ->with('ruleThreshold')
+            ->orderByDesc('issued_at')
+            ->get();
+
         return view('student.dashboard', [
             'student' => $student,
             'stats' => [
@@ -34,7 +40,25 @@ class DashboardController extends Controller
                 'total_achievement_points' => $student->totalAchievementPoints(),
             ],
             'recentLogs' => $recentLogs,
+            'certificates' => $certificates,
         ]);
+    }
+
+    public function printCertificate(Request $request, \App\Models\Certificate $certificate)
+    {
+        $studentId = $request->session()->get('parent_student_id');
+        if (! $studentId || $certificate->student_id != $studentId) {
+            abort(403);
+        }
+
+        $certificate->load(['student.currentClass', 'ruleThreshold', 'school']);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('exports.pdf.certificate', [
+            'certificate' => $certificate,
+        ]);
+        $pdf->setPaper('a4', 'landscape');
+
+        return $pdf->download($certificate->downloadFilename());
     }
 
     public function exportPdf(Request $request, \App\Services\ReportService $reportService)
