@@ -40,43 +40,40 @@
         <div class="h-px bg-gray-700/50 flex-1"></div>
     </div>
 
+    {{-- Info box --}}
+    <div class="mb-5 p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-start gap-3">
+        <svg class="w-4 h-4 text-blue-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <p class="text-xs text-blue-300 leading-relaxed">
+            Masukkan <strong>NISN anak</strong> dan <strong>tanggal lahir anak</strong> untuk mengakses laporan perilaku.
+        </p>
+    </div>
+
     <form method="POST" action="{{ route('parent.login') }}" class="space-y-5">
         @csrf
-
-        <div>
-            <label for="school_slug" class="block text-sm font-medium text-gray-300 mb-1.5">Kode Sekolah</label>
-            <input type="text" id="school_slug" name="school_slug" value="{{ old('school_slug') }}" required
-                   class="w-full px-4 py-2.5 rounded-lg bg-surface border border-gray-600 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                   placeholder="contoh: smpn1-demo">
-        </div>
 
         <div>
             <label for="nisn" class="block text-sm font-medium text-gray-300 mb-1.5">NISN Anak</label>
             <input type="text" id="nisn" name="nisn" value="{{ old('nisn') }}" required
                    class="w-full px-4 py-2.5 rounded-lg bg-surface border border-gray-600 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                   placeholder="Nomor Induk Siswa Nasional">
+                   placeholder="Nomor Induk Siswa Nasional"
+                   inputmode="numeric">
         </div>
 
-        <div x-data="{ show: false }">
-            <label for="access_code" class="block text-sm font-medium text-gray-300 mb-1.5">Kode Akses</label>
-            <div class="relative">
-                <input :type="show ? 'text' : 'password'" id="access_code" name="access_code" required
-                       class="w-full px-4 py-2.5 rounded-lg bg-surface border border-gray-600 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all pr-10"
-                       placeholder="Kode akses dari sekolah">
-                <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-200 cursor-pointer">
-                    <svg x-show="!show" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                    <svg x-show="show" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display: none;">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.05 10.05 0 011.52-3.415M15 12a3 3 0 01-3 3m-3-3a3 3 0 013-3m0 0l-3 3m3-3l3 3M3 3l18 18" />
-                    </svg>
-                </button>
-            </div>
+        <div>
+            <label for="birth_date" class="block text-sm font-medium text-gray-300 mb-1.5">Tanggal Lahir Anak</label>
+            <input type="date" id="birth_date" name="birth_date" value="{{ old('birth_date') }}" required
+                   class="w-full px-4 py-2.5 rounded-lg bg-surface border border-gray-600 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                   max="{{ now()->format('Y-m-d') }}">
+            <p class="text-[11px] text-gray-500 mt-1">Format: hari/bulan/tahun (sesuaikan dengan data sekolah)</p>
         </div>
 
         <button type="submit"
-                class="w-full py-2.5 px-4 rounded-lg bg-gradient-to-r from-green-600 to-emerald-700 text-white font-medium hover:from-green-500 hover:to-emerald-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-surface transition-all shadow-lg shadow-green-500/20 cursor-pointer">
+                class="w-full py-2.5 px-4 rounded-lg bg-gradient-to-r from-green-600 to-emerald-700 text-white font-medium hover:from-green-500 hover:to-emerald-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-surface transition-all shadow-lg shadow-green-500/20 cursor-pointer flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+            </svg>
             Masuk
         </button>
     </form>

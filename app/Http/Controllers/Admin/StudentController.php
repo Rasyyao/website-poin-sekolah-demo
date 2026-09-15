@@ -11,7 +11,6 @@ use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Services\StudentMigrationService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class StudentController extends Controller
 {
@@ -82,13 +81,6 @@ class StudentController extends Controller
         return redirect()->route('admin.students.index')->with('success', 'Siswa berhasil dihapus.');
     }
 
-    public function generateAccessCode(Student $student)
-    {
-        $plainCode = Str::upper(Str::random(8));
-        $student->update(['access_code' => $plainCode]);
-
-        return redirect()->route('admin.students.show', $student)->with('success', 'Kode akses berhasil di-generate.')->with('access_code', $plainCode);
-    }
 
     public function migration(Request $request)
     {

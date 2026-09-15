@@ -92,7 +92,6 @@ Route::prefix('admin')
             Route::get('students/migration', [StudentController::class, 'migration'])->name('students.migration');
             Route::post('students/bulk-migrate', [StudentController::class, 'bulkMigrate'])->name('students.bulk-migrate');
             Route::resource('students', StudentController::class);
-            Route::post('students/{student}/generate-access-code', [StudentController::class, 'generateAccessCode'])->name('students.generate-access-code');
 
             // View Rules
             Route::resource('rules', RuleController::class)->only(['index', 'show']);

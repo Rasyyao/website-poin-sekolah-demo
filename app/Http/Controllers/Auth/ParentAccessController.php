@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Student;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class ParentAccessController extends Controller
@@ -18,21 +18,20 @@ class ParentAccessController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'nisn' => ['required', 'string'],
-            'access_code' => ['required', 'string'],
-            'school_slug' => ['required', 'string'],
+            'nisn'       => ['required', 'string'],
+            'birth_date' => ['required', 'date'],
         ]);
 
         $student = Student::withoutGlobalScopes()
-            ->whereHas('school', fn ($q) => $q->where('slug', $request->school_slug))
             ->where('nisn', $request->nisn)
+            ->whereNotNull('birth_date')
             ->first();
 
-        $inputCode = strtoupper($request->access_code);
+        $inputDate = \Carbon\Carbon::parse($request->birth_date)->format('Y-m-d');
 
-        if (! $student || ! \Illuminate\Support\Facades\Hash::check($inputCode, $student->access_code)) {
+        if (! $student || $student->birth_date->format('Y-m-d') !== $inputDate) {
             throw ValidationException::withMessages([
-                'access_code' => ['NISN atau kode akses salah.'],
+                'birth_date' => ['NISN atau tanggal lahir tidak sesuai.'],
             ]);
         }
 

@@ -51,14 +51,6 @@
         </div>
 
         <div class="w-full space-y-3 z-10">
-            <form method="POST" action="{{ route('admin.students.generate-access-code', $student) }}" class="w-full">
-                @csrf
-                <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary-600 text-white text-sm font-medium hover:bg-primary-500 transition-all shadow-lg cursor-pointer group">
-                    <svg class="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
-                    Generate Kode Akses Orang Tua
-                </button>
-            </form>
-            
             <div x-data="{ open: false }" class="relative">
                 <button @click="open = !open" @click.away="open = false" type="button" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-medium hover:bg-slate-50 transition-colors shadow-sm cursor-pointer">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
@@ -83,20 +75,6 @@
                 </div>
             </div>
         </div>
-        
-        @if(session('access_code'))
-            <div class="mt-6 w-full p-5 rounded-xl bg-primary-900/40 border border-primary-500/40 backdrop-blur-sm relative overflow-hidden z-10 group">
-                <div class="absolute inset-0 bg-primary-500/5 group-hover:bg-primary-500/10 transition-colors"></div>
-                <p class="text-xs text-primary-300 mb-2 relative">Kode Akses Orang Tua:</p>
-                <div class="flex items-center justify-center gap-3 relative">
-                    <p class="text-3xl font-mono font-black text-white tracking-[0.2em] drop-shadow-md">{{ session('access_code') }}</p>
-                </div>
-                <p class="text-[11px] text-primary-300/80 mt-3 relative flex items-center justify-center gap-1">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                    Simpan kode ini sekarang. Hanya tampil sekali.
-                </p>
-            </div>
-        @endif
     </div>
 
     {{-- Stats and History --}}
